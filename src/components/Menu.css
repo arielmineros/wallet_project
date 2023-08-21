@@ -7,16 +7,16 @@ body{
 
 
 
-.navbar{
+.navbarra{
     background-color: #597226;
     color: white;
-    padding: 1%;
-    height: 60px;
+    padding: 10px;
+    height: 50px;
     /* display: flex;
     justify-content: center; */
 }
 
-.nav-list{
+.nav-lista{
     list-style: none;
     display: flex;
     margin: auto;
@@ -25,33 +25,33 @@ body{
     align-items: center;
     padding: 0;
 }
-.nav-list .search-container{
+.nav-lista .search-contenedor{
     margin-left:0;
 }
-.nav-item{
+.navegador-item{
     margin: 0 10px;
     text-decoration: none;
     color: white;
 
 }
-.nav-item img{
+.navegador-item img{
     width: 20px;
 }
 
-.menu-container{
+.menu-contenedor{
     width: auto;
     display: flex;
     justify-content: space-around;
 }
-.logo img{
+.logo-empresa img{
     width: 50px;
     margin-right:10px;
     /* height: 100px; */
 }
-.logo{
+.logo-empresa{
     display:flex;
     justify-content: left;
-    align-items: center;
+    align-items: center;                                             
     
         
 }
@@ -59,11 +59,11 @@ body{
     display: flex;
     justify-content: start;
     width: 15px;
-} */
+}  */
 
-/* .logo-container{
+.logo-contenedor{
     padding: 0;
     display: flex;
     justify-content: center;
     align-items: center;
-} */
+}

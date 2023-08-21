@@ -1,0 +1,120 @@
+.product-page {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap:  wrap;
+    /* width: 100px; */
+    padding: 20px;
+  }
+  
+  .product-container {
+    display: flex;
+    flex-wrap: wrap;
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    /* box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1); */
+    margin: 40px;
+    overflow: hidden;
+  }
+  
+  .product-image {
+    flex: 1;
+    background-color: white;
+    padding: 20px;
+    text-align: center;
+    /* width: auto; */
+    margin: auto;
+  }
+  .product-image img{
+    width: 500px;
+   
+  }
+  
+  .comments-container {
+    flex: 1;
+    /* background-color:white; */
+    padding: 40px;
+    width: 100%;
+  }
+ 
+  .product-details {
+    min-width: 400px;
+    flex: 1;
+    padding: 40px;
+    background-color: white;
+    /* border: 1px solid #ccc; */
+    border-radius: 8px;
+    /* box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1); */
+    margin-left: 20px;
+  }
+  
+  .product-description {
+    margin-bottom: 10px;
+  }
+  
+  .comment-card {
+    border: 1px solid #ccc;
+    padding: 20px;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .comment-user {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+  
+  .user-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 10px;
+  }
+  
+  .username {
+    font-weight: bold;
+    margin: 0;
+  }
+  
+  .comment {
+    margin: 0;
+  }
+  
+  .product-rating {
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
+  }
+  
+  .star-rating {
+    margin-right: 10px;
+  }
+  
+  .star {
+    font-size: 18px;
+  }
+  
+  .rating-value {
+    margin: 0 10px;
+    font-weight: bold;
+  }
+  
+  .num-reviews {
+    color: #888;
+  }
+  
+  .buy-button {
+    display: block;
+    margin-top: 20px;
+    margin: 0 auto ;
+    
+    padding: 10px 20px;
+    background-color: white;
+    border: 2px solid ;
+    border-radius: 8px;
+    cursor: pointer;
+    
+  }

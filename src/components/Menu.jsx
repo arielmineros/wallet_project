@@ -8,35 +8,35 @@ import SearchBar from './SearchBar';
 
 function Menu() {
   return (
-    <nav className="navbar">
-      <div className="nav-list">
+    <nav className="navbarra">
+      <div className="nav-lista">
         
-        <div className='logo-container'>
-            <li className='logo'>
+        <div className='logo-contenedor'>
+            <li className='logo-empresa'>
               <img src={require('./blockchain.png')} alt='logo' />
               <label id='brand-name'>Blockchain</label>
             </li>
 
         </div>
 
-        <div className='search-container'>
+        <div className='search-contenedor'>
           <a><SearchBar /></a>
         </div>
 
-       <div className='menu-container'>
+       <div className='menu-contenedor'>
           <li>
-            <a href='#' className="nav-item" id='nav-ini'><img src={require('../icons/home.png')} /></a>
+            <a href='#' className="navegador-item" ><img src={require('../icons/home.png')} /></a>
           </li>
           <li>
-            <a href='#' className="nav-item" id='nav-ini'><img src={require('../icons/heart.png')} /></a>
+            <a href='#' className="navegador-item" ><img src={require('../icons/heart.png')} /></a>
           </li>
           <li>
-            <a href='#' className="nav-item" id='nav-ini'><img src={require('../icons/shopping-cart.png')} /></a>
+            <a href='#' className="navegador-item" ><img src={require('../icons/shopping-cart.png')} /></a>
           </li>
           <li>
-            <a href='#' className="nav-item" id='nav-ini'><img src={require('../icons/bell.png')} /></a>
+            <a href='#' className="navegador-item"><img src={require('../icons/bell.png')} /></a>
           </li>
-          <li className="nav-item">
+          <li className="navegador-item">
           <ConnectWalletBtn />
           </li>
        </div>

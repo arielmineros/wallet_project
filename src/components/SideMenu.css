@@ -1,9 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=Roboto:wght@700;900&display=swap');
 
-body{
-    font-family: 'Orbitron', sans-serif;
-    font-family: 'Roboto', sans-serif;
-}
 
 *{
   margin: 0;
@@ -13,48 +9,97 @@ body{
 }
 .sidebar{
   position: fixed;
-  left: 0;
+  left: -250px;
+  top: 70px;
   width: 250px;
   height: 100%;
-  background: #042331;
+  background: #84cd3c;
+  transition: all .5s ease;
 }
+/*#menuside-background{*/
+    /*width: auto;*/
+    /*height: 0;*/
+    /*padding: 0;*/
+    /*margin: 0;*/
+/**/
+/*}*/
+
 .sidebar header{
   font-size: 22px;
   color: white;
   text-align: center;
   line-height: 70px;
-  background: #063146;
-  user-select: none;
+  background: #84cd3c;
+  /* user-select: none; */
 }
 .sidebar ul a{
   display: block;
   height: 100%;
-  width: 100%;
+  /* width: 100%; */
   line-height: 65px;
   font-size: 20px;
   color:white;
-  padding-left: 40px;
+  padding-left: 10px;
   box-sizing: border-box;
   border-top: 1px solid rgba(255, 255, 255, .1);
-  border-bottom: 1px solid black;
+  /* border-bottom: 1px solid black; */
   transition: .4s;
 }
+/* ul li a{
+  text-decoration: none;
+} */
 ul li:hover a{
-  padding-left:50px  ;
+  background-color: #313b4e;
+  /* border-radius: 10%; */
+  color: #d99c0c;
+  text-decoration: none;
 }
-img{
+#btn{
   width: 40px;
+}
+#cancel{
+    width: 20px;
 }
 #check{
   display: none;
 }
 label #btn, label #cancel{
-  /* position: absolute; */
-  cursor: pointer;
+    position:absolute; 
+    cursor: pointer;
+    background:#042331;
 }
 label #btn{
-  left: 40px;
-  top: 10px;
+  left: 10px;
+  top: 80px;
   font-size: 35px;
   color: white;
+  padding: 6px 12px;
+  transition: all .5s;
+}
+label #cancel{
+    z-index: 1111;
+    left: -195px;
+    top: 65px;
+    font-size: 30px;
+    color: #0a5275;
+    padding: 6px 9px;
+    transition: all .5s;
+    opacity: 0%;
+}
+
+#check:checked ~ .sidebar{
+    left: 0;
+}
+
+#check:checked ~ label #btn{
+    left: 185px;
+    opacity: 0;
+    pointer-events: none;
+
+}
+#check:checked ~ label #cancel{
+    left: 185px;
+    top: 75px;
+    opacity: 100%;
+
 }

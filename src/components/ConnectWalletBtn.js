@@ -1,7 +1,16 @@
+import { useEffect, useState } from "react";
+import Web3 from "web3";
 
-function ConnectWalletBtn(){
+function App(){
+    const [Metamask, setMetamask]=useState(false);
+    const [web3,setWeb3]=useState(null);
+    
+}
+
+
+function ConnectWalletBtn(props){
     return(
-        <button>Connect wallet</button>
+        <button onClick={props.ConnectWalletBtn}>Connect wallet</button>
     );
 }
 export default ConnectWalletBtn

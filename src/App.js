@@ -2,6 +2,8 @@ import logo from './logo.svg';
 import './App.css';
 import Menu from './components/Menu';
 import SideMenu from './components/SideMenu';
+import Form from './components/Form';
+import ProductPage from './components/productPage/ProductPage';
 
 function App() {
   return (
@@ -9,6 +11,8 @@ function App() {
 
       <Menu />
       <SideMenu />
+      <ProductPage />
+      <Form />
     </div>
   );
 }
