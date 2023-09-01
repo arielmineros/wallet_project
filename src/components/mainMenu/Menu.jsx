@@ -1,7 +1,7 @@
 // import logo from './logo.svg';
 // import './App.css';
 import "./Menu.css";
-import "./SearchBar";
+import SideMenu from "./SideMenu";
 import { useState, useEffect } from "react";
 import Swal from "sweetalert2";
 import Web3 from "web3";
@@ -10,6 +10,7 @@ import withReactContent from "sweetalert2-react-content";
 import SearchBar from "./SearchBar";
 import smartContractRecord from "../smartContract/record.json";
 // import mainLogo from './blockchain.png'
+import { Outlet, Link } from "react-router-dom";
 
 function Menu() {
     const [web3, setWeb3] = useState(null);
@@ -20,6 +21,17 @@ function Menu() {
     const [buttonWallet, setButtonWallet] = useState(false);
     const [listarInfo, setListarInfo] = useState([]);
     const MySwal = withReactContent(Swal);
+
+    //Funcion to activate icons on click
+    document.addEventListener("DOMContentLoaded", function () {
+        const icons = document.querySelectorAll(".menu-icon");
+        icons.forEach((icon) => {
+            icon.addEventListener("click", function () {
+                icons.forEach((icon) => icon.classList.remove("active-icon"));
+                this.classList.add("active-icon");
+            });
+        });
+    });
 
     //Function to connect wallet
     const connectWallet = async () => {
@@ -81,82 +93,108 @@ function Menu() {
     }, []);
 
     return (
-        <nav className="navbarra">
-            <div className="nav-lista">
-                <div className="logo-contenedor">
-                    <li className="logo-empresa">
-                        <img
-                            src={require("../../img/blockchain.png")}
-                            alt="logo"
-                        />
-                        <label id="brand-name">Blockchain</label>
-                    </li>
-                </div>
+        <>
+            <nav className="navbarra">
+                <div className="nav-lista">
+                    <div className="logo-contenedor">
+                        <Link to="/">
+                            <li className="logo-empresa">
+                                <img
+                                    src={require("../../img/blockchain.png")}
+                                    alt="logo"
+                                />
+                                <label id="brand-name">Blockchain</label>
+                            </li>
+                        </Link>
+                    </div>
 
-                <div className="search-contenedor">
-                    <a>
+                    <div className="search-contenedor">
                         <SearchBar />
-                    </a>
-                </div>
+                    </div>
 
-                <div className="menu-contenedor">
-                    <>
-                        {verificationWallet ? (
-                            <>
-                                <li>
-                                    <a href="#" className="navegador-item">
-                                        <img
-                                            src={require("../../icons/home.png")}
-                                        />
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#" className="navegador-item">
-                                        <img
-                                            src={require("../../icons/heart.png")}
-                                        />
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#" className="navegador-item">
-                                        <img
-                                            src={require("../../icons/shopping-cart.png")}
-                                        />
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#" className="navegador-item">
-                                        <img
-                                            src={require("../../icons/bell.png")}
-                                        />
-                                    </a>
-                                </li>
-                                <li className="navegador-item">
-                                    <>
-                                        {buttonWallet ? (
-                                            <button onClick={connectWallet}>
-                                                Conectar wallet
-                                            </button>
-                                        ) : (
-                                            <button onClick={connectWallet}>
-                                                Wallet conectada
-                                            </button>
-                                        )}
-                                    </>
-                                </li>
-                            </>
-                        ) : (
-                            <>
-                                <h3>
-                                    Para comenzar en esta plataforma es esencial
-                                    crear una billetera
-                                </h3>
-                            </>
-                        )}
-                    </>
+                    <div className="menu-contenedor">
+                        <>
+                            {verificationWallet ? (
+                                <>
+                                    <li>
+                                        <Link
+                                            to="/ProductDetail"
+                                            className="navegador-item"
+                                        >
+                                            <img
+                                                src={require("../../icons/home.png")}
+                                                className="menu-icon"
+                                            />
+                                        </Link>
+                                    </li>
+                                    <li>
+                                        <Link
+                                            to="/ProductDetail"
+                                            className="navegador-item"
+                                        >
+                                            <img
+                                                src={require("../../icons/heart.png")}
+                                                className="menu-icon"
+                                            />
+                                        </Link>
+                                    </li>
+                                    <li>
+                                        <Link
+                                            to="/Cart"
+                                            className="navegador-item"
+                                        >
+                                            <img
+                                                src={require("../../icons/shopping-cart.png")}
+                                                className="menu-icon"
+                                            />
+                                        </Link>
+                                    </li>
+                                    <li>
+                                        <Link
+                                            to="/Registrar"
+                                            className="navegador-item"
+                                        >
+                                            <img
+                                                src={require("../../icons/bell.png")}
+                                                className="menu-icon"
+                                            />
+                                        </Link>
+                                    </li>
+                                    <li className="navegador-item">
+                                        <>
+                                            {buttonWallet ? (
+                                                <button
+                                                    id="connect-button"
+                                                    onClick={connectWallet}
+                                                >
+                                                    Conectar wallet
+                                                </button>
+                                            ) : (
+                                                <button
+                                                    id="connect-button"
+                                                    onClick={connectWallet}
+                                                >
+                                                    Wallet conectada
+                                                </button>
+                                            )}
+                                        </>
+                                    </li>
+                                </>
+                            ) : (
+                                <>
+                                    <h3>
+                                        Para comenzar en esta plataforma es
+                                        esencial crear una billetera
+                                    </h3>
+                                </>
+                            )}
+                        </>
+                    </div>
                 </div>
-            </div>
-        </nav>
+            </nav>
+            <Outlet />
+            <SideMenu />
+        </>
     );
 }
 

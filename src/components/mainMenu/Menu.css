@@ -9,11 +9,14 @@ body{
 
 .navbarra{
     background-color: #597226;
+    /*display: flex;*/
     color: white;
     padding: 10px;
-    height: 50px;
+    /*height: 50px;*/
     /* display: flex;
     justify-content: center; */
+    /*justify-content: space-between;*/
+    /*align-items: center;*/
 }
 
 .nav-lista{
@@ -26,10 +29,12 @@ body{
     padding: 0;
 }
 .nav-lista .search-contenedor{
-    margin-left:0;
+    margin-left:10px;
+    top: 20px;
+
 }
 .navegador-item{
-    margin: 0 10px;
+    /*margin: 0 10px;*/
     text-decoration: none;
     color: white;
 
@@ -39,9 +44,11 @@ body{
 }
 
 .menu-contenedor{
-    width: auto;
+    width: 30%;
     display: flex;
-    justify-content: space-around;
+    justify-content: space-between;
+    align-items:center;
+    padding: 10px 10px ;
 }
 .logo-empresa img{
     width: 50px;
@@ -65,5 +72,38 @@ body{
     padding: 0;
     display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: top;
+}
+.logo-contenedor:hover{
+    cursor: pointer;
+}
+#brand-name{
+    color: whitesmoke;
+}
+#brand-name:hover{
+    cursor: pointer;
+}
+#connect-button{
+    background-color: #3498db; /* Color de fondo */
+    color: white; /* Color del texto */
+    border: none; /* Sin borde */
+    margin: none;
+    padding: 5px 5px; /*Espacio interno*/
+
+    border-radius: 5px; /* Bordes redondeados */
+    cursor: pointer; /* Cambiar el cursor al pasar el ratón */
+    font-size: 14px; /* Tamaño del texto */
+}
+#connect-button:hover{
+    background-color: #2980b9;
+}
+.menu-icon{
+    margin: 10px;
+    cursor: pointer;
+    filter: grayscale(100%);
+    transition:filter 0.3s ease;
+}
+.menu-icon.active-icon{
+    filter: none;
+    background-color: black;
 }
