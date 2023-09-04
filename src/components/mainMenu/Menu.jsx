@@ -10,6 +10,8 @@ import withReactContent from "sweetalert2-react-content";
 import SearchBar from "./SearchBar";
 import smartContractRecord from "../smartContract/record.json";
 // import mainLogo from './blockchain.png'
+//
+//import createCookie from "./cookie.js";
 import { Outlet, Link } from "react-router-dom";
 
 function Menu() {
@@ -21,6 +23,7 @@ function Menu() {
     const [buttonWallet, setButtonWallet] = useState(false);
     const [listarInfo, setListarInfo] = useState([]);
     const MySwal = withReactContent(Swal);
+    const [walletConnected, setWalletConnected] = useState(false);
 
     //Funcion to activate icons on click
     document.addEventListener("DOMContentLoaded", function () {
@@ -58,6 +61,8 @@ function Menu() {
                 ); //Converts the balance from wei to eth
                 setBalance(balanceEth);
                 setButtonWallet(false);
+                setWalletConnected(true);
+                localStorage.setItem("walletConnected", "true");
 
                 const contractInstance = new web3Instance.eth.Contract(
                     smartContractRecord,
@@ -65,6 +70,9 @@ function Menu() {
                         "0x34D44DBc2c73B0eCb4bC738bfB850f92AaB89ae2"
                 ); //Create an instance
                 setContract(contractInstance);
+                setTimeout(() => {
+                    localStorage.setItem("walletConnected", "false");
+                }, 24 * 60 * 60 * 1000);
             } catch (error) {
                 console.log(error);
                 MySwal.fire({
@@ -85,11 +93,29 @@ function Menu() {
                 setVerificationWallet(true);
                 setButtonWallet(true);
             }
-            //else {
-            //setButtonWallet(false);
-            //}
+            {
+                /*else {*/
+            }
+            {
+                /*setButtonWallet(false);*/
+            }
+            {
+                /*}*/
+            }
         }
         Wallet();
+    }, []);
+    //Verify if there's a session stored
+    useEffect(() => {
+        const isWalletConnected =
+            localStorage.getItem("walletConnected") === "true";
+        setWalletConnected(isWalletConnected);
+
+        if (isWalletConnected) {
+            //window.ethereum.enable();
+            connectWallet();
+            //setWalletConnected(true);
+        }
     }, []);
 
     return (
