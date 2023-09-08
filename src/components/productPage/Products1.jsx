@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-// import './style.css'
+import './css/style.css';
 // import './css/'
 const Product1=()=>{
     return(
@@ -167,7 +167,7 @@ const Product1=()=>{
                 <div class="box">
                   <a href="">
                     <div class="img-box">
-                      <img src="images/p7.png" alt="" />
+                      <img src={require('./images/p7.png')} alt="" />
                     </div>
                     <div class="detail-box">
                       <h6>
@@ -192,7 +192,7 @@ const Product1=()=>{
                 <div class="box">
                   <a href="">
                     <div class="img-box">
-                      <img src="images/p8.png" alt="" />
+                      <img src={require('./images/p8.png')} alt="" />
                     </div>
                     <div class="detail-box">
                       <h6>

@@ -13,6 +13,8 @@ import { Route, Routes } from "react-router-dom";
 import Login from "./components/login/Login";
 import RegisTro from "./components/login/Registrar";
 import WalletInfo from "./components/walletInfo/walletInfo";
+import Product1 from "./components/productPage/Products1";
+// import { Products } from "./components/productPage/Products";
 // import walletInfo from "./components/walletInfo/walletInfo";
 // import Product1 from "./components/productPage/Products1";
 
@@ -33,11 +35,12 @@ function App() {
                     <Route path="/" element={<Login />} />
                     {/* <Route path="Login" element={<Login />} /> */}
                     <Route path="/WalletInfo" element={<WalletInfo />} />
-                    <Route path="ProductDetail" element={<ProductDetail />} />
-                    <Route path="Registrar" element={<RegisTro />} />
+                    <Route path="/ProductDetail" element={<ProductDetail />} />
+                    <Route path="/Registrar" element={<RegisTro />} />
+                    <Route path="/Cart" element={<Product1 />} />
                     {/* <Route path="walletInfo" element={<walletInfo account={account} balance={balance} contract={contract}/>}/> */}
-                    {/* <Route path="Product1" element={<Product1 />} /> */}
-                    <Route path="ProductDetail" />
+                    {/* <Route path="/Product1" element={<Product1 />} /> */}
+                    {/* <Route path="/ProductDetail" /> */}
                 </Route>
             </Routes>
         </div>
