@@ -1,4 +1,9 @@
 #wallet-info-container{
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1000;
     width: 500px;
     display: flex;
     justify-content: center;
@@ -11,7 +16,6 @@
 }
 
 #info-wallet #get-info{
-    /* width: auto; */
     align-items: left ;
     margin: none;
     --tw-text-opacity: 1;

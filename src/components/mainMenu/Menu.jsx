@@ -162,7 +162,7 @@ function Menu() {
                                     </li>
                                     <li>
                                         <Link
-                                            to="/"
+
                                             className="navegador-item"
                                             onClick={toggleModal}
                                         >
