@@ -1,7 +1,7 @@
 import React from "react";
 import "./css/registrar.css";
 import { Outlet, Link } from "react-router-dom";
-// gfhgjkkl
+// gfhgjkkll
 function RegisTro() {
     return (
         <div class="registro">
