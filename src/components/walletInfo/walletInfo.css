@@ -1,0 +1,23 @@
+#wallet-info-container{
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1000;
+    width: 500px;
+    display: flex;
+    justify-content: center;
+    align-content: left;
+    margin: 20px auto;
+    flex-wrap: wrap;
+    padding: 5%;
+    border-radius: 12px;
+    background-color:bisque;
+}
+
+#info-wallet #get-info{
+    align-items: left ;
+    margin: none;
+    --tw-text-opacity: 1;
+    color: rgb(107 114 128 / var(--tw-text-opacity));
+}

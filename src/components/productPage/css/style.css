@@ -1,0 +1,77 @@
+/* Estilos para las tarjetas de productos */
+.box {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 10px;
+    margin-bottom: 20px;
+    text-align: center;
+    transition: transform 0.2s;
+  }
+  
+  .box:hover {
+    transform: scale(1.05);
+  }
+  
+  .img-box img {
+    width: 100px;
+    height: 200px;
+  }
+  
+  .detail-box h6 {
+    font-size: 18px;
+    margin-top: 10px;
+    color: #333;
+  }
+  
+  .detail-box span {
+    font-size: 16px;
+    color: #0074d9;
+  }
+  
+  .new span {
+    background-color: #0074d9;
+    color: #fff;
+    font-size: 14px;
+    padding: 5px 10px;
+    border-radius: 5px;
+    margin-top: 10px;
+  }
+  
+  /* Estilos para el botón "View All Products" */
+  .btn-box a {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #0074d9;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 5px;
+    margin-top: 20px;
+    font-size: 16px;
+    transition: background-color 0.2s;
+  }
+  
+  .btn-box a:hover {
+    background-color: #0056b3;
+  }
+
+/* Estilos para el contenedor de las tarjetas de productos */
+.row {
+    display: flex;
+    flex-wrap: wrap; /* Permite que las tarjetas pasen a la siguiente línea si no caben en el ancho de la pantalla */
+    justify-content: space-between; /* Distribuye las tarjetas equitativamente en el contenedor */
+  }
+  
+  /* Estilos para las tarjetas de productos */
+  .col-sm-6 {
+    flex: 0 0 calc(25% - 10px); /* Divide las tarjetas en dos columnas, con un espacio de 10px entre ellas */
+    margin-bottom: 20px;
+    box-sizing: border-box;
+  }
+  
+  /* Estilos para el botón "View All Products" */
+  .btn-box {
+    text-align: center; /* Centra el botón en el contenedor */
+    width: 100%; /* Asegura que el botón ocupe todo el ancho del contenedor */
+  }
+  

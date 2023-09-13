@@ -10,8 +10,9 @@ import withReactContent from "sweetalert2-react-content";
 import SearchBar from "./SearchBar";
 import smartContractRecord from "../smartContract/record.json";
 // import mainLogo from './blockchain.png'
-//
-//import createCookie from "./cookie.js";
+// import Product1 from "../productPage/Products1";
+import WalletInfo from "../walletInfo/walletInfo";
+// import Login from "../login/Login"
 import { Outlet, Link } from "react-router-dom";
 
 function Menu() {
@@ -24,6 +25,12 @@ function Menu() {
     const [listarInfo, setListarInfo] = useState([]);
     const MySwal = withReactContent(Swal);
     const [walletConnected, setWalletConnected] = useState(false);
+
+    const [isModalOpen, setIsModalOpen] = useState(false);
+
+    const toggleModal = () => {
+        setIsModalOpen(!isModalOpen);
+    };
 
     //Funcion to activate icons on click
     document.addEventListener("DOMContentLoaded", function () {
@@ -155,13 +162,15 @@ function Menu() {
                                     </li>
                                     <li>
                                         <Link
-                                            to="/ProductDetail"
+
                                             className="navegador-item"
+                                            onClick={toggleModal}
                                         >
                                             <img
                                                 src={require("../../icons/heart.png")}
                                                 className="menu-icon"
                                             />
+                                            
                                         </Link>
                                     </li>
                                     <li>
@@ -215,6 +224,15 @@ function Menu() {
                     </div>
                 </div>
             </nav>
+            {isModalOpen && (
+                                            <div className="modal">
+                                                <div className="modal-content">
+                                                    <span className="close" onClick={toggleModal}>&times;</span>
+                                                    <WalletInfo account={account} balance={balance} contract={contract} />
+                                                </div>
+                                            </div>
+                                            )}
+            {/* <WalletInfo account={account} balance={balance} contract={contract} /> */}
             <Outlet />
             <SideMenu />
         </>
