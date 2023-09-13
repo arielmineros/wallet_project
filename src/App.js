@@ -4,32 +4,27 @@ import Menu from "./components/mainMenu/Menu";
 //import SideMenu from "./components/mainMenu/SideMenu";
 import Form from "./components/forms/Form.jsx";
 import ProductDetail from "./components/productPage/ProductDetail";
-import { Route, Routes } from "react-router-dom";
-//import { Cart } from "./components/cart/Cart";
-//import { Products } from "./components/productPage/Products";
-//import { CartProvider } from "./components/context/cart";
-//import { useFilters } from "./components/hooks/useFilters";
-//import products from "./components/mocks/products.json";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Login from "./components/login/Login";
-import RegisTro from "./components/login/Registrar";
+import Register from "./components/login/Registrar";
+import { AuthProvider } from "./context/AuthContext";
 
-//const initialProducts = products;
 function App() {
-    //const productos = products;
-    //const { filterProducts } = useFilters();
-    //const filteredProducts = filterProducts(initialProducts);
-
     return (
         <div>
-            <Routes>
-                <Route path="/" element={<Menu />}>
-                    <Route path="/" element={<Login />} />
-                    <Route path="Login" element={<Login />} />
-                    <Route path="ProductDetail" element={<ProductDetail />} />
-                    <Route path="Registrar" element={<RegisTro />} />
-                    <Route path="ProductDetail" />
-                </Route>
-            </Routes>
+            <BrowserRouter>
+                <Routes>
+                    <Route path="/" element={<Menu />}>
+                        <Route path="register" element={<Register />} />
+                        <Route path="login" element={<Login />} />
+                        <Route
+                            path="ProductDetail"
+                            element={<ProductDetail />}
+                        />
+                        <Route path="ProductDetail" />
+                    </Route>
+                </Routes>
+            </BrowserRouter>
         </div>
     );
 }
