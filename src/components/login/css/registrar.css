@@ -31,6 +31,7 @@ h2 {
     display: flex;
     font-weight: 100;
     justify-content: center;
+    color: rgba(255, 255, 255, 0.402);
 }
 
 h2:first-child {
@@ -111,6 +112,12 @@ span{
 
 .signin:focus {
     outline: none;
+}
+
+.error{
+    font-size: 15px;
+    text-align: center;
+    color: rgba(255, 47, 47, 0.59);
 }
 
 /*a {*/
