@@ -26,20 +26,22 @@ function App() {
         // const balanceWei = await web3Instance.eth.getBalance(accounts[0]);  // Representa el saldo de una cuenta en wei
 
         <div>
-            <BrowserRouter>
-                <Routes>
-                    <Route path="/" element={<Menu />}>
-                        <Route path="register" element={<Register />} />
-                        <Route path="login" element={<Login />} />
-                        <Route
-                            path="ProductDetail"
-                            element={<ProductDetail />}
-                        />
-                        <Route path="ProductDetail" />
-                        <Route path="/Cart" element={<Product1 />} />
-                    </Route>
-                </Routes>
-            </BrowserRouter>
+            <AuthProvider>
+                <BrowserRouter>
+                    <Routes>
+                        <Route path="/" element={<Menu />}>
+                            <Route path="register" element={<Register />} />
+                            <Route path="login" element={<Login />} />
+                            <Route
+                                path="ProductDetail"
+                                element={<ProductDetail />}
+                            />
+                            <Route path="ProductDetail" />
+                            <Route path="/Cart" element={<Product1 />} />
+                        </Route>
+                    </Routes>
+                </BrowserRouter>
+            </AuthProvider>
         </div>
     );
 }
