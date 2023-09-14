@@ -1,30 +1,42 @@
 import React, { useState, useEffect } from "react";
+
 import "./css/registrar.css";
 
 import { Outlet, Link } from "react-router-dom";
-// gfhgjkkll
-function RegisTro() {
-  const [username, setUsername] = useState("");
-  const [isUsernameErrorVisible, setIsUsernameErrorVisible] = useState(false);
-  const [email, setEmail] = useState("");
-  const [telefono, setTelefono] = useState("");
-  const [edad, setEdad] = useState("");
-  const [pass, setPass] = useState("");
-  const [confirmPass, setConfirmPass] = useState("");
-  const [isButtonDisabled, setIsButtonDisabled] = useState(true);
-  const isEmailValid = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/.test(email);
-  useEffect(() => {
-    const isUsernameValid = username.trim() !== "";
-    const isPasswordValid = pass.length >= 6;
-    const doPasswordsMatch = pass === confirmPass;
+import { useForm } from "react-hook-form";
+import registerRequest from "../../api/auth";
+import { useAuth } from "../../context/AuthContext";
 
-    setIsButtonDisabled(!(isUsernameValid && isEmailValid && isPasswordValid && doPasswordsMatch));
-  }, [username, email, pass, confirmPass]);
+function Register() {
+    const [username, setUsername] = useState("");
+    const [isUsernameErrorVisible, setIsUsernameErrorVisible] = useState(false);
+    const [email, setEmail] = useState("");
+    const [telefono, setTelefono] = useState("");
+    const [edad, setEdad] = useState("");
+    const [pass, setPass] = useState("");
+    const [confirmPass, setConfirmPass] = useState("");
+    const [isButtonDisabled, setIsButtonDisabled] = useState(true);
+    const isEmailValid = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/.test(email);
+    useEffect(() => {
+      const isUsernameValid = username.trim() !== "";
+      const isPasswordValid = pass.length >= 6;
+      const doPasswordsMatch = pass === confirmPass;
 
-  const handleUsernameChange = (event) => {
-    setUsername(event.target.value);
-    setIsUsernameErrorVisible(false); // Ocultar la advertencia cuando el usuario comienza a escribir
-  };
+      setIsButtonDisabled(!(isUsernameValid && isEmailValid && isPasswordValid && doPasswordsMatch));
+    }, [username, email, pass, confirmPass]);
+    const { register, handleSubmit } = useForm();
+    //const { signup, user } = useAuth();
+    //const [user, setUser] = useState(null);
+
+    //console.log(user);
+
+    const onSubmit = handleSubmit(async (values) => {
+        //console.log(values);
+        //const res = await registerRequest(user);
+        const res = await registerRequest(values);
+        //console.log(res);
+        //setUser(res.data);
+    });
 
   const handleBlur = () => {
     // Mostrar la advertencia si el campo está vacío al perder el foco
@@ -35,7 +47,7 @@ function RegisTro() {
     return (
         <div className="registro">
         <h2>Registrese</h2>
-        <form method="POST">
+        <form onSumbit={onSubmit}>
         <input
           type="text"
           className="text"
@@ -43,6 +55,7 @@ function RegisTro() {
           value={username}
           onChange={handleUsernameChange}
           onBlur={handleBlur}
+          {..register("username", { required: true })}
         />
         <span id="input-label">Nombre Completo</span>
         {isUsernameErrorVisible && (
@@ -59,6 +72,8 @@ function RegisTro() {
             name="email"
             value={email}
             onChange={(event) => setEmail(event.target.value)}
+            {...register("email", { required: true })}
+
             required
           />
           {!isEmailValid && email.trim() !== "" && <p className="error">El correo no es válido.</p>}
@@ -91,6 +106,7 @@ function RegisTro() {
             name="pass"
             value={pass}
             onChange={(event) => setPass(event.target.value)}
+            {...register("password", { required: true })}
             required
           />
           {pass.length > 0 && pass.length < 6 && <p className="error">La contraseña debe tener al menos 6 caracteres.</p>}
@@ -103,6 +119,7 @@ function RegisTro() {
             name="confirmPass"
             value={confirmPass}
             onChange={(event) => setConfirmPass(event.target.value)}
+            {...register("password", { required: true })}
             required
           />
           {confirmPass !== pass && confirmPass.length > 0 && <p className="error">Las contraseñas no coinciden.</p>}
@@ -122,4 +139,5 @@ function RegisTro() {
     );
   }
   
-  export default RegisTro;
+  export default Register
+

@@ -1,13 +1,21 @@
-import React from "react";
+import React, { useState } from "react";
 import "./css/login.css";
-import { Outlet, Link } from "react-router-dom";
+import { Outlet, Link, useAsyncError } from "react-router-dom";
 
 function Login() {
+    const [username, setUsername] = useState("");
+    const [password, setPassword] = useState("");
+    console.log(username);
     return (
         <div class="login">
             <h2>LOGIN</h2>
             <form method="POST">
-                <input type="text" class="text" name="username" />
+                <input
+                    onChange={(e) => setUsername(e.target.value)}
+                    type="text"
+                    class="text"
+                    name="username"
+                />
                 <span id="input-label">Usuario</span>
                 <br />
                 <br />
@@ -27,7 +35,7 @@ function Login() {
                 <a id="forgotten-pass" href="#">
                     Has olvidado tu contraseña?
                 </a>
-                <Link to="/Registrar" class="regis">
+                <Link to="/register" class="regis">
                     Registrate
                 </Link>
             </form>

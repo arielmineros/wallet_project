@@ -185,10 +185,7 @@ function Menu() {
                                         </Link>
                                     </li>
                                     <li>
-                                        <Link
-                                            to="/Registrar"
-                                            className="navegador-item"
-                                        >
+                                        <Link to="/" className="navegador-item">
                                             <img
                                                 src={require("../../icons/bell.png")}
                                                 className="menu-icon"
