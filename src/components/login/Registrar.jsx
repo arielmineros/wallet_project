@@ -64,14 +64,14 @@ function Register() {
             <form
                 onSubmit={handleSubmit(async (values) => {
                     const res = await registerRequest(values);
-                    setUser(res);
+                    //setUser(res);
                 })}
             >
                 <input
                     type="text"
+                    name="username"
                     {...register("username", { required: true })}
                     className="text"
-                    name="username"
                     //value={username}
                     //onChange={handleUsernameChange}
                     //onBlur={handleBlur}
@@ -95,8 +95,8 @@ function Register() {
                 <input
                     type="password"
                     className="text"
+                    name="password"
                     {...register("password", { required: true })}
-                    name="pass"
                     //value={pass}
                     //onChange={(event) => setPass(event.target.value)}
                     required
@@ -106,9 +106,9 @@ function Register() {
 
                 <input
                     type="password"
-                    {...register("password", { required: true })}
                     className="text"
-                    name="confirmPass"
+                    {...register("password", { required: true })}
+                    name="password"
                     //value={confirmPass}
                     //onChange={(event) => setConfirmPass(event.target.value)}
                     required
