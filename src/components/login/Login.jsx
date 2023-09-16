@@ -1,35 +1,53 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./css/login.css";
-import { Outlet, Link, useAsyncError } from "react-router-dom";
+import { Outlet, Link, useAsyncError, useNavigate } from "react-router-dom";
+import { useForm } from "react-hook-form";
+import { useAuth } from "../../context/AuthContext";
 
 function Login() {
-    const [username, setUsername] = useState("");
-    const [password, setPassword] = useState("");
-    console.log(username);
+    //const [username, setUsername] = useState("");
+    //const [password, setPassword] = useState("");
+    //console.log(username);
+    const navigate = useNavigate();
+    const {
+        register,
+        handleSubmit,
+        formState: { errors },
+    } = useForm();
+    const { login, isAuthenticated, errors: LoginErrors } = useAuth();
+    const onSubmit = handleSubmit((data) => {
+        //console.log(data);
+        login(data);
+    });
+    useEffect(() => {
+        if (isAuthenticated) navigate("/");
+    }, [isAuthenticated]);
+
     return (
         <div class="login">
             <h2>LOGIN</h2>
-            <form method="POST">
+            <form onSubmit={onSubmit}>
                 <input
-                    onChange={(e) => setUsername(e.target.value)}
-                    type="text"
+                    //onChange={(e) => setUsername(e.target.value)}
+                    {...register("email", { required: true })}
+                    type="email"
                     class="text"
-                    name="username"
+                    name="email"
                 />
-                <span id="input-label">Usuario</span>
+                <span id="input-label">Email</span>
                 <br />
                 <br />
-                <input type="password" class="text" name="password" />
+                <input
+                    {...register("password", { required: true })}
+                    type="password"
+                    class="text"
+                    name="password"
+                />
                 <span id="input-label">Contraseña</span>
                 <br />
-                <input
-                    type="checkbox"
-                    id="checkbox-1-1"
-                    class="custom-checkbox"
-                />
-                <label className="keep-logged" for="checkbox-1-1">
-                    Mantenerse Registrado
-                </label>
+                {LoginErrors.map((error, i) => (
+                    <div id="errors">{error}</div>
+                ))}
                 <button class="signin">Sign In</button>
                 <hr />
                 <a id="forgotten-pass" href="#">

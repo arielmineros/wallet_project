@@ -81,7 +81,7 @@ function Menu() {
                     localStorage.setItem("walletConnected", "false");
                 }, 24 * 60 * 60 * 1000);
             } catch (error) {
-                console.log(error);
+                //console.log(error);
                 MySwal.fire({
                     icon: "error",
                     title: "Oops",

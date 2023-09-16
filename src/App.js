@@ -11,24 +11,30 @@ import { AuthProvider } from "./context/AuthContext";
 //import RegisTro from "./components/login/Registrar";
 import WalletInfo from "./components/walletInfo/walletInfo";
 import Product1 from "./components/productPage/Products1";
+import ProtectedRoute from "./components/protected/ProtectedRoute";
 
 function App() {
     return (
         <div>
-            <BrowserRouter>
-                <Routes>
-                    <Route path="/" element={<Menu />}>
+            <AuthProvider>
+                <BrowserRouter>
+                    <Routes>
                         <Route path="register" element={<Register />} />
                         <Route path="login" element={<Login />} />
-                        <Route
-                            path="ProductDetail"
-                            element={<ProductDetail />}
-                        />
-                        <Route path="ProductDetail" />
-                        <Route path="/Cart" element={<Product1 />} />
-                    </Route>
-                </Routes>
-            </BrowserRouter>
+                        <Route element={<ProtectedRoute />}>
+                            <Route path="/" element={<Menu />}>
+                                <Route path="/" element={<Product1 />} />
+                                <Route
+                                    path="ProductDetail"
+                                    element={<ProductDetail />}
+                                />
+                                <Route path="ProductDetail" />
+                                <Route path="/Cart" element={<Product1 />} />
+                            </Route>
+                        </Route>
+                    </Routes>
+                </BrowserRouter>
+            </AuthProvider>
         </div>
     );
 }

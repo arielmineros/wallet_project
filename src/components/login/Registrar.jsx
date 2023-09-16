@@ -2,23 +2,44 @@ import React, { useState, useEffect } from "react";
 
 import "./css/registrar.css";
 
-import { Outlet, Link } from "react-router-dom";
+import { Outlet, Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import registerRequest from "../../api/auth";
 import { useAuth } from "../../context/AuthContext";
 
 function Register() {
+    const {
+        register,
+        handleSubmit,
+        formState: { errors },
+    } = useForm();
+    const { signup, isAuthenticated, errors: RegisterErrors } = useAuth();
     const [username, setUsername] = useState("");
     const [isUsernameErrorVisible, setIsUsernameErrorVisible] = useState(false);
     const [email, setEmail] = useState("");
-    //const [telefono, setTelefono] = useState("");
-    //const [edad, setEdad] = useState("");
     const [pass, setPass] = useState("");
     const [confirmPass, setConfirmPass] = useState("");
     const [isButtonDisabled, setIsButtonDisabled] = useState(true);
+    const navigate = useNavigate();
     const isEmailValid = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/.test(
         email
     );
+    const onSubmit = handleSubmit(async (values) => {
+        signup(values);
+        //console.log(values);
+    });
+
+    const handleUsernameChange = (event) => {
+        setUsername(event.target.value);
+        setIsUsernameErrorVisible(false);
+    };
+
+    const handleBlur = () => {
+        // Mostrar la advertencia si el campo está vacío al perder el foco
+        if (username.trim() === "") {
+            setIsUsernameErrorVisible(true);
+        }
+    };
     useEffect(() => {
         const isUsernameValid = username.trim() !== "";
         const isPasswordValid = pass.length >= 6;
@@ -33,91 +54,53 @@ function Register() {
             )
         );
     }, [username, email, pass, confirmPass]);
-    const { register, handleSubmit } = useForm();
-    //const { signup, user } = useAuth();
-    const [user, setUser] = useState(null);
+    //const [user, setUser] = useState(null);
+    useEffect(() => {
+        if (isAuthenticated) navigate("/");
+    }, [isAuthenticated]);
 
     //console.log(user);
 
-    //const onSubmit = handleSubmit(async (values) => {
-    ////console.log(values);
-    ////const res = await registerRequest(user);
-    //const res = await registerRequest(values);
-    //console.log(res);
-    //setUser(res.data);
-    //});
-
-    const handleUsernameChange = (event) => {
-        setUsername(event.target.value);
-        setIsUsernameErrorVisible(false);
-    };
-
-    const handleBlur = () => {
-        // Mostrar la advertencia si el campo está vacío al perder el foco
-        if (username.trim() === "") {
-            setIsUsernameErrorVisible(true);
-        }
-    };
     return (
         <div className="registro">
             <h2>Registrese</h2>
-            <form
-                onSubmit={handleSubmit(async (values) => {
-                    const res = await registerRequest(values);
-                    //setUser(res);
-                })}
-            >
+            <form onSubmit={onSubmit}>
                 <input
                     type="text"
                     name="username"
-                    {...register("username", { required: true })}
                     className="text"
-                    //value={username}
-                    //onChange={handleUsernameChange}
-                    //onBlur={handleBlur}
+                    {...register("username", { required: true })}
+                    required
                 />
                 <span id="input-label">Nombre Completo</span>
-
                 <br />
-
                 <input
                     type="text"
                     className="text"
-                    {...register("email", { required: true })}
                     name="email"
-                    //value={email}
-                    //onChange={(event) => setEmail(event.target.value)}
+                    {...register("email", { required: true })}
                     required
                 />
                 <span id="input-label">Correo</span>
                 <br />
-
                 <input
                     type="password"
                     className="text"
                     name="password"
                     {...register("password", { required: true })}
-                    //value={pass}
-                    //onChange={(event) => setPass(event.target.value)}
                     required
                 />
                 <span id="input-label">contraseña</span>
+                {RegisterErrors.map((error, i) => (
+                    <div id="errors">{error}</div>
+                ))}
                 <br />
-
-                <input
-                    type="password"
-                    className="text"
-                    {...register("password", { required: true })}
-                    name="password"
-                    //value={confirmPass}
-                    //onChange={(event) => setConfirmPass(event.target.value)}
-                    required
-                />
-
                 <button className="signin" type="submit">
                     Sign UP
                 </button>
                 <hr />
+                <br />
+                <label htmlFor="">Already have an account? </label>
                 <Link to="/Login" className="regis">
                     Login
                 </Link>

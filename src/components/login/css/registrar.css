@@ -98,7 +98,7 @@ span{
     display: block;
     height: 39px;
     border-radius: 20px;
-    margin-top: 30px;
+    margin-top: auto;
     transition: all 0.5s ease-in-out;
     border: none;
     text-transform: uppercase;
@@ -118,6 +118,10 @@ span{
     font-size: 15px;
     text-align: center;
     color: rgba(255, 47, 47, 0.59);
+}
+#errors{
+    color: red;
+    margin: none;
 }
 
 /*a {*/
