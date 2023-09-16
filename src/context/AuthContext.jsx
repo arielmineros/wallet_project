@@ -1,5 +1,5 @@
 import { createContext, useState, useContext, useEffect } from "react";
-import { registerRequest, loginRequest } from "../api/auth";
+import { registerRequest, loginRequest, verifyTokenRequest } from "../api/auth";
 import Cookies from "js-cookie";
 //import { useAsyncError } from "react-router-dom";
 export const AuthContext = createContext();
@@ -16,6 +16,8 @@ export const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null);
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     const [errors, setErrors] = useState([]);
+    const [loading, setLoading] = useState(true);
+
     const signup = async (user) => {
         try {
             //console.log(values);
@@ -32,7 +34,7 @@ export const AuthProvider = ({ children }) => {
     const login = async (user) => {
         try {
             const res = await loginRequest(user);
-            setUser(res.data);
+            //setUser(res.data);
             setIsAuthenticated(true);
             console.log(res);
         } catch (error) {
@@ -41,15 +43,32 @@ export const AuthProvider = ({ children }) => {
             //if (Array.isArray(error.response.data)) {
             //return setErrors(error.response.data.message);
             //}
-            //setErrors([error.response.data.message]);
+            setErrors([error.response.data.message]);
         }
     };
     useEffect(() => {
-        const cookies = Cookies.get();
-        console.log(cookies);
-        if (cookies.token) {
-            console.log("token found");
-        }
+        const checkLogin = async () => {
+            const cookies = Cookies.get();
+            if (!cookies.token) {
+                setIsAuthenticated(false);
+                setLoading(false);
+                return;
+            }
+
+            try {
+                const res = await verifyTokenRequest(cookies.token);
+                console.log(res);
+                if (!res.data) return setIsAuthenticated(false);
+                setIsAuthenticated(true);
+                setUser(res.data);
+                setLoading(false);
+            } catch (error) {
+                setIsAuthenticated(false);
+                setLoading(false);
+            }
+        };
+        checkLogin();
+        //heckLogin();
     }, []);
 
     useEffect(() => {
@@ -63,7 +82,7 @@ export const AuthProvider = ({ children }) => {
 
     return (
         <AuthContext.Provider
-            value={{ signup, login, user, isAuthenticated, errors }}
+            value={{ signup, login, loading, user, isAuthenticated, errors }}
         >
             {children}
         </AuthContext.Provider>
