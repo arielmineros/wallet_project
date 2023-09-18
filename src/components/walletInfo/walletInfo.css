@@ -14,7 +14,9 @@
     border-radius: 12px;
     background-color:bisque;
 }
-
+#info-wallet h2{
+    color: gray;
+}
 #info-wallet #get-info{
     align-items: left ;
     margin: none;
