@@ -1,18 +1,13 @@
 import React, { useState, useEffect } from "react";
-
-import "./css/registrar.css";
-
+import { Controller, useForm } from "react-hook-form";
 import { Outlet, Link, useNavigate } from "react-router-dom";
-import { useForm } from "react-hook-form";
 import registerRequest from "../../api/auth";
 import { useAuth } from "../../context/AuthContext";
+import "./css/registrar.css";
 
 function Register() {
-    const {
-        register,
-        handleSubmit,
-        formState: { errors },
-    } = useForm();
+    
+    const { control,register, handleSubmit, setError, formState: { errors } } = useForm(); // Inicializa useForm
     const { signup, isAuthenticated, errors: RegisterErrors } = useAuth();
     const [username, setUsername] = useState("");
     const [isUsernameErrorVisible, setIsUsernameErrorVisible] = useState(false);
@@ -65,34 +60,74 @@ function Register() {
         <div className="registro">
             <h2>Registrese</h2>
             <form onSubmit={onSubmit}>
-                <input
-                    type="text"
+                <Controller
                     name="username"
-                    className="text"
-                    {...register("username", { required: true })}
-                    required
+                    control={control}
+                    defaultValue=""
+                    rules={{ required: "Nombre Completo es requerido" }}
+                    render={({ field }) => (
+                        <>
+                            <input
+                                type="text"
+                                name="username"
+                                className="text"
+                                {...register("username", { required: true })}
+                                required
+                            />
+                            <span id="input-label">Nombre Completo</span>
+                        </>
+                    )}
                 />
-                <span id="input-label">Nombre Completo</span>
+                {errors.username && <div id="errors">{errors.username.message}</div>}
                 <br />
-                <input
-                    type="text"
-                    className="text"
+                <Controller
                     name="email"
-                    {...register("email", { required: true })}
-                    required
+                    control={control}
+                    defaultValue=""
+                    rules={{
+                        required: "Correo es requerido",
+                        pattern: {
+                            value: /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/,
+                            message: "Correo no válido",
+                        },
+                    }}
+                    render={({ field }) => (
+                        <>
+                             <input
+                                type="text"
+                                className="text"
+                                name="email"
+                                {...register("email", { required: true })}
+                                required
+                            />
+                            <span id="input-label">Correo</span>
+                        </>
+                    )}
                 />
-                <span id="input-label">Correo</span>
+                {errors.email && <div id="errors">{errors.email.message}</div>}
                 <br />
-                <input
-                    type="password"
-                    className="text"
+                <Controller
                     name="password"
-                    {...register("password", { required: true })}
-                    required
+                    control={control}
+                    defaultValue=""
+                    rules={{ required: "Contraseña es requerida", minLength: { value: 6, message: "La contraseña debe tener al menos 6 caracteres" } }}
+                    render={({ field }) => (
+                        <>
+                            <input
+                                type="password"
+                                className="text"
+                                name="password"
+                                {...register("password", { required: true })}
+                                required
+                            />
+                            <span id="input-label">Contraseña</span>
+                        </>
+                    )}
                 />
-                <span id="input-label">contraseña</span>
+                {errors.password && <div id="errors">{errors.password.message}</div>}
+                <br />
                 {RegisterErrors.map((error, i) => (
-                    <div id="errors">{error}</div>
+                    <div id="errors" key={i}>{error}</div>
                 ))}
                 <br />
                 <button className="signin" type="submit">
