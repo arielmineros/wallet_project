@@ -1,13 +1,16 @@
 import { useForm } from "react-hook-form";
 import "./BookForm.css";
 import { useBook } from "../../context/BookContext";
+import BookPage from "./BookPage";
+import { Outlet, Link } from "react-router-dom";
+
 
 function BookForm() {
     const { register, handleSubmit } = useForm();
-    const { books } = useBook();
-    console.log(books);
+    const { books,createBook } = useBook();
+    // console.log(books);
     const onSubmit = handleSubmit((data) => {
-        //createBook(data);
+        createBook(data);
     });
     return (
         <>
@@ -55,11 +58,7 @@ function BookForm() {
                     placeholder="Autor"
                     {...register("author")}
                 />
-                <input
-                    type="file"
-                    id="input-img"
-                    placeholder="Agregar imagen"
-                />
+                
                 <textarea
                     name=""
                     placeholder="Descripción"
@@ -69,6 +68,8 @@ function BookForm() {
 
                 <button>Guardar</button>
             </form>
+            <Outlet />
+            {/* <BookForm /> */}
         </>
     );
 }

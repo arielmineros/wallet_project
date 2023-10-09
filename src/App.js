@@ -36,14 +36,8 @@ function App() {
                                         path="books"
                                         element={<BookForm />}
                                     />
-                                    <Route
-                                        path="add-book"
-                                        element={<BookForm />}
-                                    />
-                                    <Route
-                                        path="books/:id"
-                                        element={<BookForm />}
-                                    />
+                                    
+                                    
                                 </Route>
                             </Route>
                         </Routes>
