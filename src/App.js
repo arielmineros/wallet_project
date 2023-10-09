@@ -12,28 +12,43 @@ import { AuthProvider } from "./context/AuthContext";
 import WalletInfo from "./components/walletInfo/walletInfo";
 import Product1 from "./components/productPage/Products1";
 import ProtectedRoute from "./components/protected/ProtectedRoute";
+import BookForm from "./components/productPage/BookForm";
+import { BookProvider } from "./context/BookContext";
 
 function App() {
     return (
         <div>
             <AuthProvider>
-                <BrowserRouter>
-                    <Routes>
-                        <Route path="register" element={<Register />} />
-                        <Route path="login" element={<Login />} />
-                        <Route element={<ProtectedRoute />}>
-                            <Route path="/" element={<Menu />}>
-                                <Route path="/" element={<Product1 />} />
-                                <Route
-                                    path="ProductDetail"
-                                    element={<ProductDetail />}
-                                />
-                                <Route path="ProductDetail" />
-                                <Route path="/Cart" element={<Product1 />} />
+                <BookProvider>
+                    <BrowserRouter>
+                        <Routes>
+                            <Route path="register" element={<Register />} />
+                            <Route path="login" element={<Login />} />
+                            <Route element={<ProtectedRoute />}>
+                                <Route path="/" element={<Menu />}>
+                                    <Route path="/" element={<Product1 />} />
+                                    <Route
+                                        path="ProductDetail"
+                                        element={<ProductDetail />}
+                                    />
+                                    <Route path="ProductDetail" />
+                                    <Route
+                                        path="books"
+                                        element={<BookForm />}
+                                    />
+                                    <Route
+                                        path="add-book"
+                                        element={<BookForm />}
+                                    />
+                                    <Route
+                                        path="books/:id"
+                                        element={<BookForm />}
+                                    />
+                                </Route>
                             </Route>
-                        </Route>
-                    </Routes>
-                </BrowserRouter>
+                        </Routes>
+                    </BrowserRouter>
+                </BookProvider>
             </AuthProvider>
         </div>
     );
