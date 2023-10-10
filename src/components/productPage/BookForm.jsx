@@ -1,24 +1,34 @@
 import { useForm } from "react-hook-form";
 import "./BookForm.css";
 import { useBook } from "../../context/BookContext";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import BookPage from "./BookPage";
 import { Outlet, Link } from "react-router-dom";
+//import imagen from "https://cdnx.jumpseller.com/libreria-nuestra-america/image/9791536/Miguel_M_rmol.jpg?1605963815";
 
 function BookForm() {
     const { register, handleSubmit } = useForm();
     const { booksUser, createBook, getBooks, getUserBooks } = useBook();
+    const [loading, setLoading] = useState(true);
+    const imageUrl =
+        "https://www.contrapunto.com.sv/wp-content/uploads/2021/12/MiguelMarmolA1.jpg";
     //const books_user = booksUser;
     //console.log(books_user);
     const onSubmit = handleSubmit((data) => {
         createBook(data);
     });
     useEffect(() => {
-        console.log("Libros del usuario: ");
-        getUserBooks();
+        async function fetchData() {
+            console.log("Libros del usuario: ");
+            await getUserBooks();
+            setLoading(false);
+        }
         //getBooks();
+        //if (booksUser.length == 0) {
+        //setMostrarLibros(false);
+        //}
+        fetchData();
     }, []);
-    if (booksUser.length == 0) return <h1>No ha agregado libros</h1>;
     return (
         <>
             <form onSubmit={onSubmit} id="form-book">
@@ -75,26 +85,34 @@ function BookForm() {
 
                 <button>Guardar</button>
             </form>
-            <div id="book-card">
-                {booksUser.map((book) => (
-                    <div key={book._id}>
-                        <div id="book-info">
-                            <h1>{book.title}</h1>
-                            <p>{book.topic}</p>
-                            <p>{book.author}</p>
-                            <p>{book.description}</p>
-                            <p>{book.edition}</p>
-                            <p>{book.isbn}</p>
-                            <p>{book.publishingDetails}</p>
-                            <p>{book.serieDetails}</p>
+            {loading ? (
+                <h1>Cargando libros...</h1>
+            ) : booksUser.length > 0 ? (
+                <div id="book-card">
+                    {booksUser.map((book) => (
+                        <div key={book._id}>
+                            <div id="book-info">
+                                <h1>{book.title}</h1>
+                                <img src={imageUrl} alt="" />
+                                <p>{book.topic}</p>
+                                <p>{book.author}</p>
+                                <p>{book.description}</p>
+                                <p>{book.edition}</p>
+                                <p>{book.isbn}</p>
+                                <p>{book.publishingDetails}</p>
+                                <p>{book.serieDetails}</p>
+                            </div>
+                            <div id="button-section">
+                                <button>Editar</button>
+                                <button>Eliminar</button>
+                            </div>
                         </div>
-                        <div id="button-section">
-                            <button>Editar</button>
-                            <button>Eliminar</button>
-                        </div>
-                    </div>
-                ))}
-            </div>
+                    ))}
+                </div>
+            ) : (
+                <h1>No se han agregado libros</h1>
+            )}
+
             <Outlet />
             {/* <BookForm /> */}
         </>
