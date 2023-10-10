@@ -14,9 +14,11 @@ import smartContractRecord from "../smartContract/record.json";
 import WalletInfo from "../walletInfo/walletInfo";
 // import Login from "../login/Login"
 import { Outlet, Link } from "react-router-dom";
+import { useAuth } from "../../context/AuthContext";
 
 function Menu() {
     const [web3, setWeb3] = useState(null);
+    const { logout } = useAuth();
     const [account, setAccount] = useState(null);
     const [balance, setBalance] = useState(null);
     const [contract, setContract] = useState(null);
@@ -162,7 +164,6 @@ function Menu() {
                                     </li>
                                     <li>
                                         <Link
-
                                             className="navegador-item"
                                             onClick={toggleModal}
                                         >
@@ -170,7 +171,6 @@ function Menu() {
                                                 src={require("../../icons/heart.png")}
                                                 className="menu-icon"
                                             />
-                                            
                                         </Link>
                                     </li>
                                     <li>
@@ -185,9 +185,27 @@ function Menu() {
                                         </Link>
                                     </li>
                                     <li>
-                                        <Link to="/" className="navegador-item">
+                                        <Link
+                                            to={"/books-user"}
+                                            className="navegador-item"
+                                        >
                                             <img
-                                                src={require("../../icons/bell.png")}
+                                                src={require("../../icons/user.png")}
+                                                alt=""
+                                                className="menu-icon"
+                                            />
+                                        </Link>
+                                    </li>
+                                    <li>
+                                        <Link
+                                            to="/"
+                                            onClick={() => {
+                                                logout();
+                                            }}
+                                            className="navegador-item"
+                                        >
+                                            <img
+                                                src={require("../../icons/logout.png")}
                                                 className="menu-icon"
                                             />
                                         </Link>
@@ -225,13 +243,19 @@ function Menu() {
                 </div>
             </nav>
             {isModalOpen && (
-                                            <div className="modal">
-                                                <div className="modal-content">
-                                                    <span className="close" onClick={toggleModal}>&times;</span>
-                                                    <WalletInfo account={account} balance={balance} contract={contract} />
-                                                </div>
-                                            </div>
-                                            )}
+                <div className="modal">
+                    <div className="modal-content">
+                        <span className="close" onClick={toggleModal}>
+                            &times;
+                        </span>
+                        <WalletInfo
+                            account={account}
+                            balance={balance}
+                            contract={contract}
+                        />
+                    </div>
+                </div>
+            )}
             {/* <WalletInfo account={account} balance={balance} contract={contract} /> */}
             <Outlet />
             <SideMenu />

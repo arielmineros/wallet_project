@@ -13,6 +13,7 @@ import WalletInfo from "./components/walletInfo/walletInfo";
 import Product1 from "./components/productPage/Products1";
 import ProtectedRoute from "./components/protected/ProtectedRoute";
 import BookForm from "./components/productPage/BookForm";
+import BookPage from "./components/productPage/BookPage";
 import { BookProvider } from "./context/BookContext";
 
 function App() {
@@ -26,7 +27,7 @@ function App() {
                             <Route path="login" element={<Login />} />
                             <Route element={<ProtectedRoute />}>
                                 <Route path="/" element={<Menu />}>
-                                    <Route path="/" element={<Product1 />} />
+                                    <Route path="/" element={<BookPage />} />
                                     <Route
                                         path="ProductDetail"
                                         element={<ProductDetail />}
@@ -36,8 +37,10 @@ function App() {
                                         path="books"
                                         element={<BookForm />}
                                     />
-                                    
-                                    
+                                    <Route
+                                        path="books-user"
+                                        element={<BookForm />}
+                                    />
                                 </Route>
                             </Route>
                         </Routes>

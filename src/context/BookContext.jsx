@@ -19,40 +19,47 @@ export const useBook = () => {
 };
 export function BookProvider({ children }) {
     const [books, setBooks] = useState([]);
+    const [booksUser, setBooksUser] = useState([]);
 
-    // const createBook = async (book)=>{
-    //     try {
-            
-    //         const res = await createBookRequest(book)
-    //         console.log(res)
-    //     } catch (error) {
-    //         console.log(error)
-    //     }
-    //     // // const res = await createBookRequest(task)
-    //     console.log('asdf')
-    //     // console.log(task)
-    // }
-
-    const createBook = async (book)=>{
+    const createBook = async (book) => {
         try {
-            
-            const res = await createBookRequest(book)
-            console.log(res)
+            const res = await createBookRequest(book);
+            console.log(res);
         } catch (error) {
-            console.log(error)
+            console.log(error);
         }
+    };
+    const getBooks = async () => {
+        try {
+            const res = await getBooksRequest();
 
-    }
-    const getBooks =async()=>{
-        const res = await getBookRequest()
-        console.log(res)
-    }
-    const getUserBooks = async()=>{
-        const res = await getUserBooksRequest();
-        console.log(res)
-    }
+            setBooks(res.data);
+            console.log(res);
+            //return res;
+        } catch (error) {
+            console.log(error);
+        }
+    };
+    const getUserBooks = async () => {
+        try {
+            const res = await getUserBooksRequest();
+            setBooksUser(res.data);
+            console.log(res);
+        } catch (error) {
+            console.log(error);
+        }
+    };
     return (
-        <BookContext.Provider value={{ books,createBook,getBooks, getUserBooks}}>
+        <BookContext.Provider
+            value={{
+                books,
+                booksUser,
+                createBook,
+                getBooks,
+                getUserBooks,
+                getUserBooks,
+            }}
+        >
             {children}
         </BookContext.Provider>
     );

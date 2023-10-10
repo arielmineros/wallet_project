@@ -8,3 +8,4 @@ export const loginRequest = (user) => axios.post(`/login`, user);
 //export const loginRequest = (user) => axios.post("/login", user);
 export const verifyTokenRequest = () => axios.get("/verify");
 //export default { registerRequest, loginRequest };
+//export const logoutRequest =()=>axios

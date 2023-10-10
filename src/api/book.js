@@ -1,7 +1,7 @@
 import axios from "./axios";
 
 export const getBooksRequest = () => axios.get("/books");
-export const getUserBooksRequest =()=>axios.get("/Books/User")
+export const getUserBooksRequest = () => axios.get("/books-user");
 export const getBookRequest = (id) => axios.get(`/books/${id}`);
 export const createBookRequest = (book) => axios.post("/books", book);
 export const updateBookRequest = (book) =>
