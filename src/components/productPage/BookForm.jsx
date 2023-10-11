@@ -80,10 +80,10 @@ function BookForm() {
                     name=""
                     placeholder="Descripción"
                     {...register("description")}
-                    id=""
+                    id="textarea-BookForm"
                 ></textarea>
 
-                <button>Guardar</button>
+                <button className="button-BookForm">Guardar</button>
             </form>
             {loading ? (
                 <h1>Cargando libros...</h1>
@@ -92,19 +92,21 @@ function BookForm() {
                     {booksUser.map((book) => (
                         <div key={book._id}>
                             <div id="book-info">
-                                <h1>{book.title}</h1>
-                                <img src={imageUrl} alt="" />
-                                <p>{book.topic}</p>
-                                <p>{book.author}</p>
-                                <p>{book.description}</p>
-                                <p>{book.edition}</p>
-                                <p>{book.isbn}</p>
-                                <p>{book.publishingDetails}</p>
-                                <p>{book.serieDetails}</p>
-                            </div>
-                            <div id="button-section">
-                                <button>Editar</button>
-                                <button>Eliminar</button>
+                                <h1 id="titulo-BookForm">{book.title}</h1>
+                                <div id="containerImg-BookForm">
+                                    <img id="imgCard-BookForm" src={imageUrl} alt="" />
+                                </div>
+                                <p id="textdesc-BookForm"> <i><b>Genero: </b></i>{book.topic}</p>
+                                <p id="textdesc-BookForm"> <i><b>Autor: </b></i>{book.author}</p>
+                                <p id="textdesc-BookForm"> <i><b>Descripccion: </b></i>{book.description}</p>
+                                <p id="textdesc-BookForm"> <i><b>Edicion: </b></i>{book.edition}</p>
+                                <p id="textdesc-BookForm"> <i><b>ISBN: </b></i>{book.isbn}</p>
+                                <p id="textdesc-BookForm"> <i><b>Editorial: </b></i>{book.publishingDetails}</p>
+                                <p id="textdesc-BookForm"> <i><b>Detalles de Serie: </b></i>{book.serieDetails}</p>
+                                <div id="button-section">
+                                    <button id="btnEditar-BookForm" /*{className=" button-BookForm"}*/>Editar</button>
+                                    <button id="btnEliminar-BookForm" /*{className="button-BookForm"}*/>Eliminar</button>
+                                </div>
                             </div>
                         </div>
                     ))}
@@ -119,3 +121,4 @@ function BookForm() {
     );
 }
 export default BookForm;
+ 

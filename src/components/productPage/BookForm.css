@@ -1,42 +1,214 @@
-#input-book{
-    color: black;
-}
 
+/* Estilos para el formulario */
 #form-book {
     max-width: 400px;
-    margin: 0 auto;
+    margin: 130px auto 0 auto;
     padding: 20px;
-    background-color: #f0f0f0;
-    border-radius: 5px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    background-color: #3ee98b;
+    border: 1px solid #ccc;
+    border-radius: 25px;
+    -webkit-box-shadow: 10px 10px 25px 0px rgba(146,53,240,0.75);
+    -moz-box-shadow: 10px 10px 25px 0px rgba(146,53,240,0.75);
+    box-shadow: 10px 10px 25px 0px rgba(146,53,240,0.75);
+    -webkit-animation: slide-top 0.5s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
+	animation: slide-top 0.5s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
+
 }
 
-#tituloForm_BookForm {
-    width: 100%;
+@-webkit-keyframes slide-top {
+  0% {
+    -webkit-transform: translateY(0);
+            transform: translateY(0);
+  }
+  100% {
+    -webkit-transform: translateY(-100px);
+            transform: translateY(-100px);
+  }
+}
+@keyframes slide-top {
+  0% {
+    -webkit-transform: translateY(0);
+            transform: translateY(0);
+  }
+  100% {
+    -webkit-transform: translateY(-100px);
+            transform: translateY(-100px);
+  }
+}
+
+/* Estilos para los campos de entrada */
+#input-book {
+    width: 90%;
     padding: 10px;
     margin-bottom: 10px;
     border: 1px solid #ccc;
-    border-radius: 3px;
+    border-radius: 40px;
 }
 
-#input-book[type="text"],
-#textarea-prueba {
-    width: 100%;
-    padding: 10px;
-    margin-bottom: 10px;
-    border: 1px solid #ccc;
-    border-radius: 3px;
-}
-
-#button-prueba {
-    background-color: #007bff;
+/* Estilos para el botón */
+.button-BookForm {
+    min-width: 130px;
     color: #fff;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 3px;
+    padding: 5px 10px;
+    font-weight: bold;
     cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    display: inline-block;
+    outline: none;
+    border-radius: 20px;
+    z-index: 0;
+    background: #fff;
+    overflow: hidden;
+    border: 2px solid #57cc99;
+    color: #57cc99;
+    height: 40px;
 }
 
-#button-prueba:hover {
-    background-color: #0056b3;
+.button-BookForm:hover {
+    color: #fff;
+}
+
+.button-BookForm:hover:after{
+    width: 100%;
+}
+
+
+
+.button-BookForm:after{
+    content: "";
+    z-index: -1;
+    transition: all 0.3s ease;
+    left: 0;
+    top: 0;
+    width: 0;
+    height: 100%;
+    background: linear-gradient(to right,#9235f0, #57cc99);
+    position: absolute;
+}
+
+/* Estilos para el textarea */
+#textarea-BookForm {
+    width: 90%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 25px;
+    resize: none;
+}
+
+/* Estilos para el foco en los campos de entrada */
+#input-book:focus,
+#textarea-BookForm:focus {
+    border: 1px solid #007bff;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+}
+
+/* Estilos para el espacio entre elementos */
+.form-element-spacing {
+    margin-right: 10px;
+}
+
+/* Estilos para el contenedor del botón */
+#button-container {
+    text-align: center;
+}
+
+/* Estilo de las cards */
+
+/* Estilos para la tarjeta de información del libro */
+#book-card{
+    display: flex;
+    flex-wrap: wrap;
+    animation: myAnim 2s ease 0s 1 normal forwards;
+    
+}
+
+@keyframes myAnim {
+	0% {
+		transform: scale(0.5);
+	}
+
+	100% {
+		transform: scale(1);
+	}
+}
+
+#book-info {
+    max-width: 400px;
+    margin: 30px 30px ;
+    background-color: #fff;
+    border: 1px solid #e1e1e1;
+    border-radius: 30px; 
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+}
+
+/* Estilos para el título del libro */
+#titulo-BookForm {
+    font-size: 24px;
+    color: #333;
+    margin: 0;
+}
+
+/* Estilos para la image y medidas de la misma img */
+#containerImg-BookForm img {
+    max-width: 100%;
+    height: auto;
+    margin-top: 10px;
+}
+
+/* Estilos para los párrafos de descripción */
+#textdesc-BookForm {
+    font-size: 16px;
+    color: #666;
+    margin: 10px 0;
+}
+
+/* Espaciado entre párrafos */
+#book-info p {
+    margin: 10px 0;
+}
+
+
+/* contramedida del momento para botones de eliminar y editar */
+
+#btnEditar-BookForm, #btnEliminar-BookForm {
+    min-width: 130px;
+    margin: 0 5px 0 5px;
+    color: #fff;
+    padding: 5px 10px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    display: inline-block;
+    outline: none;
+    border-radius: 20px;
+    z-index: 0;
+    background: #fff;
+    overflow: hidden;
+    border: 2px solid #3c3c3c;
+    color: #57cc99;
+    height: 40px;
+}
+
+#btnEditar-BookForm:hover, #btnEliminar-BookForm:hover {
+    color: #fff;
+}
+
+#btnEditar-BookForm:hover:after, #btnEliminar-BookForm:hover:after{
+    width: 100%;
+}
+
+#btnEditar-BookForm:after, #btnEliminar-BookForm:after{
+    content: "";
+    z-index: -1;
+    transition: all 0.3s ease;
+    left: 0;
+    top: 0;
+    width: 0;
+    height: 100%;
+    background: linear-gradient(to right,#9235f0, #f76e5c);
+    position: absolute;
 }
