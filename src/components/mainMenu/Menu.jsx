@@ -136,7 +136,7 @@ function Menu() {
                         <Link to="/">
                             <li className="logo-empresa">
                                 <img
-                                    src={require("../../img/blockchain.png")}
+                                    src={require("../../img/logo3.png")}
                                     alt="logo"
                                 />
                                 <label id="brand-name">Blockchain</label>
@@ -259,7 +259,7 @@ function Menu() {
             )}
             {/* <WalletInfo account={account} balance={balance} contract={contract} /> */}
             <Outlet />
-            <SideMenu />
+            {/* <SideMenu /> */}
         </>
     );
 }

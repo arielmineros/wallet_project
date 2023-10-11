@@ -2,7 +2,7 @@ import { useForm } from "react-hook-form";
 import "./BookForm.css";
 import { useBook } from "../../context/BookContext";
 import { useEffect, useState } from "react";
-import BookPage from "./BookPage";
+// import BookPage from "./BookPage";
 import { Outlet, Link } from "react-router-dom";
 //import imagen from "https://cdnx.jumpseller.com/libreria-nuestra-america/image/9791536/Miguel_M_rmol.jpg?1605963815";
 
@@ -16,6 +16,7 @@ function BookForm() {
     //console.log(books_user);
     const onSubmit = handleSubmit((data) => {
         createBook(data);
+        window.location.reload()
     });
     useEffect(() => {
         async function fetchData() {
@@ -82,89 +83,50 @@ function BookForm() {
                     {...register("description")}
                     id="textarea-BookForm"
                 ></textarea>
+                <input
+                    type="text"
+                    id="input-book"
+                    placeholder="url"
+                    {...register('imageUrl')}
+                />
 
                 <button className="button-BookForm">Guardar</button>
             </form>
             {loading ? (
                 <h1>Cargando libros...</h1>
             ) : booksUser.length > 0 ? (
-                <div id="book-card">
-                    {booksUser.map((book) => (
-                        <div key={book._id}>
-                            <div id="book-info">
-                                <div id="containerImg-BookForm">
-                                    <img
-                                        //id="imgCard-BookForm"
-                                        src={imageUrl}
-                                        alt=""
-                                    />
-                                </div>
-                                <h1 id="titulo-BookForm">{book.title}</h1>
-                                <p id="textdesc-BookForm">
-                                    {" "}
-                                    <i>
-                                        <b>Genero: </b>
-                                    </i>
-                                    {book.topic}
-                                </p>
-                                <p id="textdesc-BookForm">
-                                    {" "}
-                                    <i>
-                                        <b>Autor: </b>
-                                    </i>
-                                    {book.author}
-                                </p>
-                                <p id="textdesc-BookForm">
-                                    {" "}
-                                    <i>
-                                        <b>Descripccion: </b>
-                                    </i>
-                                    {book.description}
-                                </p>
-                                <p id="textdesc-BookForm">
-                                    {" "}
-                                    <i>
-                                        <b>Edicion: </b>
-                                    </i>
-                                    {book.edition}
-                                </p>
-                                <p id="textdesc-BookForm">
-                                    {" "}
-                                    <i>
-                                        <b>ISBN: </b>
-                                    </i>
-                                    {book.isbn}
-                                </p>
-                                <p id="textdesc-BookForm">
-                                    {" "}
-                                    <i>
-                                        <b>Editorial: </b>
-                                    </i>
-                                    {book.publishingDetails}
-                                </p>
-                                <p id="textdesc-BookForm">
-                                    {" "}
-                                    <i>
-                                        <b>Detalles de Serie: </b>
-                                    </i>
-                                    {book.serieDetails}
-                                </p>
-                                <div id="button-section">
-                                    <button
-                                        id="btnEditar-BookForm" /*{className=" button-BookForm"}*/
-                                    >
-                                        Editar
-                                    </button>
-                                    <button
-                                        id="btnEliminar-BookForm" /*{className="button-BookForm"}*/
-                                    >
-                                        Eliminar
-                                    </button>
-                                </div>
-                            </div>
+                <div id="centered-container">
+                {booksUser.map((book) => (
+                    <div key={book._id} className="book-card">
+                        <div className="image-container">
+                            <img
+                                src={book.imageUrl}
+                                alt={book.title}
+                                className="book-image"
+                            />
                         </div>
-                    ))}
-                </div>
+                        <div className="book-info">
+                            <h1>{book.title}</h1>
+                            <p>
+                                <i>Tema:</i> {book.topic}
+                            </p>
+                            <p>
+                                <i>Autor:</i> {book.author}
+                            </p>
+                            <p>
+                                <i>Edición:</i> {book.edition}
+                            </p>
+                            <p>
+                                <i>ISBN:</i> {book.isbn}
+                            </p>
+                            <p>
+                                <i>Detalle de serie: </i>
+                                {book.serieDetails}
+                            </p>
+                        </div>
+                    </div>
+                ))}
+            </div>
             ) : (
                 <h1>No se han agregado libros</h1>
             )}

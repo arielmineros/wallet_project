@@ -29,6 +29,7 @@ function BookPage() {
                         background:
                             "linear-gradient(to bottom, #16235e 0%, #51fc72 100%)",
                         position: "relative",
+                        zIndex:"50",
                     }}
                 >
                     <Carousel
@@ -94,10 +95,10 @@ function BookPage() {
                         textAlign: "center",
                         color: "#51fc72",
                         WebkitTextStroke: "7px #16235e",
-                        zIndex: 100,
+                        zIndex: 50,
                     }}
                 >
-                    <h1 style={{ fontSize: "200px" }}>CIRCULAR BOOKS</h1>
+                    <h1 style={{ fontSize: "200px"}}>BOOKCHAIN </h1>
                 </div>
             </div>
             <div id="centered-container">
@@ -105,7 +106,7 @@ function BookPage() {
                     <div key={book._id} className="book-card">
                         <div className="image-container">
                             <img
-                                src={imageUrl}
+                                src={book.imageUrl}
                                 alt={book.title}
                                 className="book-image"
                             />

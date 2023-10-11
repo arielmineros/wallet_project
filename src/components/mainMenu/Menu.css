@@ -11,7 +11,10 @@ body{
     background-color: #597226;
     /*display: flex;*/
     color: white;
-    padding: 10px;
+    /* position: fixed; */
+    /* z-index: 100; */
+    width: 100%;
+    /* padding: 10px; */
     /*height: 50px;*/
     /* display: flex;
     justify-content: center; */

@@ -1,5 +1,7 @@
 body{
-    background-color:beige;
+    /* background-color:beige; */
+        background: linear-gradient(to bottom, #16235e 0%, #51fc72 100%);
+
 }
 
 .formulario{

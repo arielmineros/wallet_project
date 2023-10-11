@@ -5,7 +5,9 @@
     margin: 130px auto 0 auto;
     padding: 20px;
     background-color: #3ee98b;
+    color: black;
     border: 1px solid #ccc;
+    
     border-radius: 25px;
     -webkit-box-shadow: 10px 10px 25px 0px rgba(146,53,240,0.75);
     -moz-box-shadow: 10px 10px 25px 0px rgba(146,53,240,0.75);
@@ -13,6 +15,7 @@
     -webkit-animation: slide-top 0.5s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
 	animation: slide-top 0.5s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
 
+    
 }
 
 @-webkit-keyframes slide-top {
@@ -38,6 +41,7 @@
 
 /* Estilos para los campos de entrada */
 #input-book {
+    color: black;
     width: 90%;
     padding: 10px;
     margin-bottom: 10px;
@@ -48,7 +52,7 @@
 /* Estilos para el botón */
 .button-BookForm {
     min-width: 130px;
-    color: #fff;
+    color: black;
     padding: 5px 10px;
     font-weight: bold;
     cursor: pointer;
@@ -94,6 +98,7 @@
     margin-bottom: 10px;
     border: 1px solid #ccc;
     border-radius: 25px;
+    height: 50px;
     resize: none;
 }
 
@@ -125,6 +130,16 @@
     flex-wrap: wrap;
     animation: myAnim 2s ease 0s 1 normal forwards;
     
+}
+#centered-container {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    justify-content: left;
+    align-items: left;
+    padding: 20px;
+    background-color: #007bff;
+    /* background: linear-gradient(to bottom, #16235e 0%, #51fc72 100%); */
 }
 
 @keyframes myAnim {
