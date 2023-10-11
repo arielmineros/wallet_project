@@ -14,6 +14,7 @@ import smartContractRecord from "../smartContract/record.json";
 import WalletInfo from "../walletInfo/walletInfo";
 // import Login from "../login/Login"
 import { Outlet, Link } from "react-router-dom";
+import booksSmartContract from "../../smartContract/booksSmartContract.json";
 import { useAuth } from "../../context/AuthContext";
 
 function Menu() {
@@ -74,9 +75,9 @@ function Menu() {
                 localStorage.setItem("walletConnected", "true");
 
                 const contractInstance = new web3Instance.eth.Contract(
-                    smartContractRecord,
-                    smartContractRecord &&
-                        "0x34D44DBc2c73B0eCb4bC738bfB850f92AaB89ae2"
+                    booksSmartContract,
+                    booksSmartContract &&
+                        "0x7c71c73414121e6343c61e3bd6fcd6D39a89ABa7"
                 ); //Create an instance
                 setContract(contractInstance);
                 setTimeout(() => {
@@ -205,7 +206,7 @@ function Menu() {
                                             className="navegador-item"
                                         >
                                             <img
-                                                src={require("../../icons/logout.png")}
+                                                src={require("../../icons/logout.png.png")}
                                                 className="menu-icon"
                                             />
                                         </Link>

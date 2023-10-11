@@ -92,20 +92,74 @@ function BookForm() {
                     {booksUser.map((book) => (
                         <div key={book._id}>
                             <div id="book-info">
-                                <h1 id="titulo-BookForm">{book.title}</h1>
                                 <div id="containerImg-BookForm">
-                                    <img id="imgCard-BookForm" src={imageUrl} alt="" />
+                                    <img
+                                        //id="imgCard-BookForm"
+                                        src={imageUrl}
+                                        alt=""
+                                    />
                                 </div>
-                                <p id="textdesc-BookForm"> <i><b>Genero: </b></i>{book.topic}</p>
-                                <p id="textdesc-BookForm"> <i><b>Autor: </b></i>{book.author}</p>
-                                <p id="textdesc-BookForm"> <i><b>Descripccion: </b></i>{book.description}</p>
-                                <p id="textdesc-BookForm"> <i><b>Edicion: </b></i>{book.edition}</p>
-                                <p id="textdesc-BookForm"> <i><b>ISBN: </b></i>{book.isbn}</p>
-                                <p id="textdesc-BookForm"> <i><b>Editorial: </b></i>{book.publishingDetails}</p>
-                                <p id="textdesc-BookForm"> <i><b>Detalles de Serie: </b></i>{book.serieDetails}</p>
+                                <h1 id="titulo-BookForm">{book.title}</h1>
+                                <p id="textdesc-BookForm">
+                                    {" "}
+                                    <i>
+                                        <b>Genero: </b>
+                                    </i>
+                                    {book.topic}
+                                </p>
+                                <p id="textdesc-BookForm">
+                                    {" "}
+                                    <i>
+                                        <b>Autor: </b>
+                                    </i>
+                                    {book.author}
+                                </p>
+                                <p id="textdesc-BookForm">
+                                    {" "}
+                                    <i>
+                                        <b>Descripccion: </b>
+                                    </i>
+                                    {book.description}
+                                </p>
+                                <p id="textdesc-BookForm">
+                                    {" "}
+                                    <i>
+                                        <b>Edicion: </b>
+                                    </i>
+                                    {book.edition}
+                                </p>
+                                <p id="textdesc-BookForm">
+                                    {" "}
+                                    <i>
+                                        <b>ISBN: </b>
+                                    </i>
+                                    {book.isbn}
+                                </p>
+                                <p id="textdesc-BookForm">
+                                    {" "}
+                                    <i>
+                                        <b>Editorial: </b>
+                                    </i>
+                                    {book.publishingDetails}
+                                </p>
+                                <p id="textdesc-BookForm">
+                                    {" "}
+                                    <i>
+                                        <b>Detalles de Serie: </b>
+                                    </i>
+                                    {book.serieDetails}
+                                </p>
                                 <div id="button-section">
-                                    <button id="btnEditar-BookForm" /*{className=" button-BookForm"}*/>Editar</button>
-                                    <button id="btnEliminar-BookForm" /*{className="button-BookForm"}*/>Eliminar</button>
+                                    <button
+                                        id="btnEditar-BookForm" /*{className=" button-BookForm"}*/
+                                    >
+                                        Editar
+                                    </button>
+                                    <button
+                                        id="btnEliminar-BookForm" /*{className="button-BookForm"}*/
+                                    >
+                                        Eliminar
+                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -121,4 +175,4 @@ function BookForm() {
     );
 }
 export default BookForm;
- 
+

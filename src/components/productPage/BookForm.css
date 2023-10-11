@@ -119,6 +119,9 @@
 /* Estilos para la tarjeta de información del libro */
 #book-card{
     display: flex;
+    /*max-width: 100%;*/
+    /*width: auto;*/
+    justify-content: space-around;
     flex-wrap: wrap;
     animation: myAnim 2s ease 0s 1 normal forwards;
     
@@ -134,9 +137,20 @@
 	}
 }
 
+/*#centered-container{*/
+    /*display: grid;*/
+    /*grid-template-columns: repeat(4, 1fr);*/
+    /*gap: 20px;*/
+    /*justify-content: left;*/
+    /*align-items: left;*/
+    /*padding: 20px;*/
+    /*background: linear-gradient(to bottom, #16235e 0%, #51fc72 100%);*/
+/**/
+/*}*/
+
 #book-info {
     max-width: 400px;
-    margin: 30px 30px ;
+    margin: 30px 5px;
     background-color: #fff;
     border: 1px solid #e1e1e1;
     border-radius: 30px; 
@@ -152,8 +166,8 @@
 }
 
 /* Estilos para la image y medidas de la misma img */
-#containerImg-BookForm img {
-    max-width: 100%;
+#containerImg-BookForm{
+    max-width: 500px;
     height: auto;
     margin-top: 10px;
 }
