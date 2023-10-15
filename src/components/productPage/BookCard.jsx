@@ -1,58 +1,49 @@
 import { useForm } from "react-hook-form";
 import "./BookForm.css";
+// import './BookPages.css'
 import { useBook } from "../../context/BookContext";
 import { useEffect, useState } from "react";
 // import BookPage from "./BookPage";
-import { Outlet, Link, useNavigate, useParams } from "react-router-dom";
+import { Outlet, Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 //import imagen from "https://cdnx.jumpseller.com/libreria-nuestra-america/image/9791536/Miguel_M_rmol.jpg?1605963815";
 
-function BookForm() {
-    const { register, handleSubmit, setValue } = useForm();
-    const { booksUser, createBook,updateBook, getBook, getUserBooks, deleteBook } =
+function BookCard() {
+    const { register, handleSubmit } = useForm();
+    const { booksUser, createBook, getUserBooks, deleteBook } =
         useBook();
     const { userName } = useAuth();
-    const params = useParams();
+    const navi = useNavigate()
     const [loading, setLoading] = useState(true);
-   
+    const imageUrl =
+        "https://www.contrapunto.com.sv/wp-content/uploads/2021/12/MiguelMarmolA1.jpg";
     //const books_user = booksUser;
     //console.log(books_user);
-    const navigate = useNavigate();
-    const onSubmit = handleSubmit(async (data) => {
-        if (params.id) {
-            await updateBook(params.id,data)
-            console.log('Data: ',data)
-            console.log('Parametros: ',params.id)
-        } else {
-            createBook(data);
-            // window.location.reload();
-        }
-        navigate("/books");
-    });
-
+    
     useEffect(() => {
-        async function loadBook() {
-            if (params.id) {
-                const book = await getBook(params.id);
-                console.log(book);
-                setValue("title", book.title);
-                setValue("topic", book.topic);
-                setValue("edition", book.edition);
-                setValue("isbn", book.isbn);
-                setValue("publishingDetails", book.publishingDetails);
-                setValue("serieDetails", book.serieDetails);
-                setValue("author", book.author);
-                setValue("description", book.description);
-                setValue("imageUrl", book.imageUrl);
-            }
+        async function fetchData() {
+            // console.log("Libros del usuario: ");
+            const res = await getUserBooks();
+            setLoading(false);
+            //console.log('Respuesta: ',booksUser,res)
         }
-        loadBook();
+        // console.log(`getUserBooks: ${i}`)
+        //getBooks();
+        //if (booksUser.length == 0) {
+        //setMostrarLibros(false);
+        //}
+        console.log('Libros del usuario: ',booksUser)
+        fetchData();
     }, []);
-
     return (
         <>
-            <h2>Bienvenido {userName}</h2>
-            {/* <h1>Libros agregados por el usuario: </h1> */}
+            <header id="book-card-header">
+                <h2>Bienvenido {userName}</h2>
+                <Link to="/books-user" className="button-BookForm">
+                    Agregar libro
+                </Link>
+            </header>
+            {/* <h1>Libros agregados por el usuario: </h1>
             <form onSubmit={onSubmit} id="form-book">
                 <h3>Agrega un libro: </h3>
 
@@ -114,8 +105,8 @@ function BookForm() {
                 />
 
                 <button className="button-BookForm">Guardar</button>
-            </form>
-            {/* {loading ? (
+            </form> */}
+            {loading ? (
                 <h1>Cargando libros...</h1>
             ) : booksUser.length > 0 ? (
                 <div id="centered-container">
@@ -172,7 +163,7 @@ function BookForm() {
                                     </b>
                                     {book.user.username}
                                 </p>
-                                <button id="btnEditar-BookForm">Editar</button>
+                                <Link to={`/books-user/${book._id}`}><button  id="btnEditar-BookForm">Editar</button></Link>
                                 <button
                                     id="btnEliminar-BookForm"
                                     onClick={async () => {
@@ -188,11 +179,11 @@ function BookForm() {
                 </div>
             ) : (
                 <h1>No se han agregado libros</h1>
-            )} */}
+            )}
 
             <Outlet />
             {/* <BookForm /> */}
         </>
     );
 }
-export default BookForm;
+export default BookCard;

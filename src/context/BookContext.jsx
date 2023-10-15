@@ -29,6 +29,19 @@ export function BookProvider({ children }) {
             console.log(error);
         }
     };
+
+    const deleteBook = async (id) => {
+        try {
+            const res = await deleteBookRequest(id);
+            console.log(res);
+            if (res.status === 200 || res.status === 204) {
+                setBooks(books.filter((book) => book.id !== id));
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
     const getBooks = async () => {
         try {
             const res = await getBooksRequest();
@@ -40,15 +53,35 @@ export function BookProvider({ children }) {
             console.log(error);
         }
     };
-    const getUserBooks = async () => {
+
+    const getBook = async (id) => {
         try {
-            const res = await getUserBooksRequest();
-            setBooksUser(res.data);
+            const res = await getBookRequest(id);
             console.log(res);
+            return res.data;
         } catch (error) {
             console.log(error);
         }
     };
+
+    const getUserBooks = async () => {
+        try {
+            const res = await getUserBooksRequest();
+            setBooksUser(res.data);
+            console.log('libros de user: ',res);
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    const updateBook = async (id, book) => {
+        try {
+            await updateBookRequest(id, book);
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
     return (
         <BookContext.Provider
             value={{
@@ -56,8 +89,10 @@ export function BookProvider({ children }) {
                 booksUser,
                 createBook,
                 getBooks,
+                updateBook,
                 getUserBooks,
-                getUserBooks,
+                getBook,
+                deleteBook,
             }}
         >
             {children}

@@ -4,7 +4,7 @@
 
 #search-bar{
     border-radius: 12px;
-    width: 500px; 
+    max-width: 500px; 
     height: 30px;
     /* width: ; */
     padding: 0.5% 20px;

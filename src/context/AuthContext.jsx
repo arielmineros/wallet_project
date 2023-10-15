@@ -1,4 +1,4 @@
-import { createContext, useState, useContext, useEffect } from "react";
+    import { createContext, useState, useContext, useEffect } from "react";
 import { registerRequest, loginRequest, verifyTokenRequest } from "../api/auth";
 import Cookies from "js-cookie";
 //import { useAsyncError } from "react-router-dom";
@@ -14,6 +14,7 @@ export const useAuth = () => {
 
 export const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null);
+    const [userName,setUserName]=useState('');
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     const [errors, setErrors] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -36,7 +37,9 @@ export const AuthProvider = ({ children }) => {
             const res = await loginRequest(user);
             //setUser(res.data);
             setIsAuthenticated(true);
-            console.log(res);
+            console.log('hola ',res.data.username);
+            setUserName(res.data.username)
+            localStorage.setItem("username", res.data.username);
         } catch (error) {
             console.log(error);
             //console.log(error.response.data);
@@ -86,6 +89,14 @@ export const AuthProvider = ({ children }) => {
         }
     }, [errors]);
 
+    useEffect(() => {
+        // Recuperar el nombre de usuario almacenado en localStorage al cargar la página
+        const storedUsername = localStorage.getItem("username");
+        if (storedUsername) {
+            setUserName(storedUsername);
+        }
+    }, []);
+
     return (
         <AuthContext.Provider
             value={{
@@ -94,6 +105,8 @@ export const AuthProvider = ({ children }) => {
                 logout,
                 loading,
                 user,
+                userName,
+                setUserName,
                 isAuthenticated,
                 errors,
             }}

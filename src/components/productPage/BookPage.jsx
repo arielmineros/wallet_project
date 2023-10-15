@@ -5,8 +5,8 @@ import "./BookPages.css";
 import { Carousel } from "react-carousel3";
 
 const style = {
-    width: 666,
-    height: 546,
+    width: "100px",
+    height: 500,
 };
 
 function BookPage() {
@@ -30,14 +30,17 @@ function BookPage() {
                             "linear-gradient(to bottom, #16235e 0%, #51fc72 100%)",
                         position: "relative",
                         zIndex:"50",
+                        margin:"0",
+                        padding:'0',
                     }}
                 >
                     <Carousel
                         height={780}
-                        width={1400}
+                        width={1500}
                         yOrigin={62}
                         yRadius={50}
                         autoPlay={true}
+                        
                     >
                         <div key={1} style={style}>
                             <img alt="" src={require("../../img/book1.jpeg")} />
@@ -94,11 +97,11 @@ function BookPage() {
                         transform: "translate(-50%, -50%)",
                         textAlign: "center",
                         color: "#51fc72",
-                        WebkitTextStroke: "7px #16235e",
+                        WebkitTextStroke: "2px #16235e",
                         zIndex: 50,
                     }}
                 >
-                    <h1 style={{ fontSize: "200px"}}>BOOKCHAIN </h1>
+                    <h1 style={{ fontSize: "100px"}}>BOOKCHAIN </h1>
                 </div>
             </div>
             <div id="centered-container">
@@ -111,22 +114,23 @@ function BookPage() {
                                 className="book-image"
                             />
                         </div>
+                        <br />
                         <div className="book-info">
                             <h1>{book.title}</h1>
                             <p>
-                                <i>Tema:</i> {book.topic}
+                                <b><i>Tema:</i></b> {book.topic}
                             </p>
                             <p>
-                                <i>Autor:</i> {book.author}
+                                <b><i>Autor:</i></b> {book.author}
                             </p>
                             <p>
-                                <i>Edición:</i> {book.edition}
+                                <b><i>Edición:</i></b> {book.edition}
                             </p>
                             <p>
-                                <i>ISBN:</i> {book.isbn}
+                                <b><i>ISBN:</i></b> {book.isbn}
                             </p>
                             <p>
-                                <i>Detalle de serie: </i>
+                                <b><i>Detalle de serie: </i></b>
                                 {book.serieDetails}
                             </p>
                         </div>

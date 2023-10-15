@@ -187,7 +187,7 @@ function Menu() {
                                     </li>
                                     <li>
                                         <Link
-                                            to={"/books-user"}
+                                            to={"/books"}
                                             className="navegador-item"
                                         >
                                             <img

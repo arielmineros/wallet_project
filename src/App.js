@@ -15,6 +15,7 @@ import ProtectedRoute from "./components/protected/ProtectedRoute";
 import BookForm from "./components/productPage/BookForm";
 import BookPage from "./components/productPage/BookPage";
 import { BookProvider } from "./context/BookContext";
+import BookCard from "./components/productPage/BookCard";
 
 function App() {
     return (
@@ -35,10 +36,14 @@ function App() {
                                     <Route path="ProductDetail" />
                                     <Route
                                         path="books"
-                                        element={<BookForm />}
+                                        element={<BookCard />}
                                     />
                                     <Route
                                         path="books-user"
+                                        element={<BookForm />}
+                                    />
+                                    <Route
+                                        path="books-user/:id"
                                         element={<BookForm />}
                                     />
                                 </Route>

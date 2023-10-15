@@ -1,8 +1,10 @@
-@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=Roboto:wght@700;900&display=swap');
-
+/* @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=Roboto:wght@700;900&display=swap'); */
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;900&display=swap');
 body{
-    font-family: 'Orbitron', sans-serif;
+    /* font-family: 'Orbitron', sans-serif; */
     font-family: 'Roboto', sans-serif;
+    /* font-weight; */
+    /* font-style:normal; */
 }
 
 
@@ -29,10 +31,10 @@ body{
     justify-content: space-between;
     /* justify-content: center; */
     align-items: center;
-    padding: 0;
+    padding: 0% 1%;
 }
 .nav-lista .search-contenedor{
-    margin-left:10px;
+    /* margin-left:5px; */
     top: 20px;
 
 }

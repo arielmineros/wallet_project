@@ -14,7 +14,7 @@ function Login() {
         handleSubmit,
         formState: { errors },
     } = useForm();
-    const { login, isAuthenticated, errors: LoginErrors } = useAuth();
+    const { login, setUserName, isAuthenticated, errors: LoginErrors } = useAuth();
     const onSubmit = handleSubmit((data) => {
         //console.log(data);
         login(data);
