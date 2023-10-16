@@ -57,7 +57,7 @@ export function BookProvider({ children }) {
     const getBook = async (id) => {
         try {
             const res = await getBookRequest(id);
-            console.log(res);
+            console.log('Libro seleccionado: ',res);
             return res.data;
         } catch (error) {
             console.log(error);
@@ -76,7 +76,8 @@ export function BookProvider({ children }) {
 
     const updateBook = async (id, book) => {
         try {
-            await updateBookRequest(id, book);
+            const res = await updateBookRequest(id, book);
+            console.log(res)
         } catch (error) {
             console.log(error);
         }

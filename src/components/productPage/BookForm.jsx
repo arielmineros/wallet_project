@@ -24,7 +24,7 @@ function BookForm() {
             console.log('Data: ',data)
             console.log('Parametros: ',params.id)
         } else {
-            createBook(data);
+            await createBook(data);
             // window.location.reload();
         }
         navigate("/books");
