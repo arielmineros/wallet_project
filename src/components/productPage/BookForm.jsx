@@ -4,25 +4,99 @@ import { useBook } from "../../context/BookContext";
 import { useEffect, useState } from "react";
 // import BookPage from "./BookPage";
 import { Outlet, Link, useNavigate, useParams } from "react-router-dom";
+import { useWallet } from "../../context/WalletContext";
 import { useAuth } from "../../context/AuthContext";
-//import imagen from "https://cdnx.jumpseller.com/libreria-nuestra-america/image/9791536/Miguel_M_rmol.jpg?1605963815";
+import booksSmartContract from "../../smartContract/booksSmartContract.json";
+const contractAddress = "0xE5E2A023d63eD8F0752746e5028e622468c4aB35";
 
 function BookForm() {
     const { register, handleSubmit, setValue } = useForm();
-    const { booksUser, createBook,updateBook, getBook, getUserBooks, deleteBook } =
-        useBook();
+    const {
+        booksUser,
+        createBook,
+        updateBook,
+        getBook,
+        getUserBooks,
+        deleteBook,
+    } = useBook();
     const { userName } = useAuth();
     const params = useParams();
     const [loading, setLoading] = useState(true);
-   
-    //const books_user = booksUser;
-    //console.log(books_user);
+
+    // Shit from smart contract
+    const { web3, accounts, walletConnected } = useWallet();
+    const [libros, setLibros] = useState([]);
+
+    const [ventaCreadaEvent, setVentaCreadaEvent] = useState(null);
+
+    const [contract, setContract] = useState(null);
+    const [nombreLibro, setNombreLibro] = useState("");
+    const [autor, setAutor] = useState("");
+    const [isbn, setIsbn] = useState("");
+    const [precio, setPrecio] = useState("");
+
+    const [librosContrato, setLibrosContrato] = useState([]);
+
+    const [ventas, setVentas] = useState([]);
+
+    const [nombreLibroContrato, setNombreLibroContrato] = useState("");
+    const [autorContrato, setAutorContrato] = useState("");
+    const [isbnContrato, setIsbnContrato] = useState("");
+    const [precioContrato, setPrecioContrato] = useState("");
+
+    useEffect(() => {
+        async function fetchDataFromContract() {
+            if (web3) {
+                const contract = new web3.eth.Contract(
+                    booksSmartContract,
+                    contractAddress
+                );
+
+                const libroCounter = await contract.methods
+                    .libroCounter()
+                    .call();
+
+                // Itera sobre todos los libros en el contrato y almacénalos en un array
+                const libros = [];
+                for (let i = 0; i < libroCounter; i++) {
+                    const libro = await contract.methods.libros(i).call();
+                    libros.push(libro);
+                }
+
+                // Asigna la lista de libros al estado del componente
+                setLibrosContrato(libros);
+            }
+        }
+
+        fetchDataFromContract();
+    }, [web3]);
+
+    const handleCreateVenta = async () => {
+        if (!walletConnected) {
+            alert("Por favor, conecta tu billetera antes de crear una venta.");
+            return;
+        }
+
+        if (web3) {
+            const contract = new web3.eth.Contract(
+                booksSmartContract,
+                contractAddress
+            );
+
+            await contract.methods
+                .crearVenta(nombreLibro, autor, isbn, precio)
+                .send({ from: accounts[0] });
+            // Realizar acciones adicionales después de la creación de la venta.
+        }
+    };
+
+    // stuff from db
     const navigate = useNavigate();
     const onSubmit = handleSubmit(async (data) => {
         if (params.id) {
-            await updateBook(params.id,data)
-            console.log('Data: ',data)
-            console.log('Parametros: ',params.id)
+            await updateBook(params.id, data);
+            console.log("Data: ", data);
+            console.log("Parametros: ", params.id);
         } else {
             await createBook(data);
             // window.location.reload();
@@ -53,7 +127,11 @@ function BookForm() {
         <>
             <h2>Bienvenido {userName}</h2>
             {/* <h1>Libros agregados por el usuario: </h1> */}
-            <form onSubmit={onSubmit} id="form-book">
+            <form
+                onSubmit={onSubmit}
+                onClick={handleCreateVenta}
+                id="form-book"
+            >
                 <h3>Agrega un libro: </h3>
 
                 <input
@@ -62,6 +140,8 @@ function BookForm() {
                     placeholder="Título"
                     {...register("title")}
                     autoFocus
+                    value={nombreLibro}
+                    onChange={(e) => setNombreLibro(e.target.value)}
                 />
                 <input
                     type="text"
@@ -80,6 +160,8 @@ function BookForm() {
                     id="input-book"
                     placeholder="ISBN"
                     {...register("isbn")}
+                    value={isbn}
+                    onChange={(e) => setIsbn(e.target.value)}
                 />
                 <input
                     type="text"
@@ -98,6 +180,15 @@ function BookForm() {
                     id="input-book"
                     placeholder="Autor"
                     {...register("author")}
+                    value={autor}
+                    onChange={(e) => setAutor(e.target.value)}
+                />
+                <input
+                    type="number"
+                    id="input-book"
+                    placeholder="Precio"
+                    value={precio}
+                    onChange={(e) => setPrecio(e.target.value)}
                 />
 
                 <textarea

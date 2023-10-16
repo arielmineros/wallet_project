@@ -16,40 +16,46 @@ import BookForm from "./components/productPage/BookForm";
 import BookPage from "./components/productPage/BookPage";
 import { BookProvider } from "./context/BookContext";
 import BookCard from "./components/productPage/BookCard";
+import { WalletProvider } from "./context/WalletContext";
 
 function App() {
     return (
         <div>
             <AuthProvider>
                 <BookProvider>
-                    <BrowserRouter>
-                        <Routes>
-                            <Route path="register" element={<Register />} />
-                            <Route path="login" element={<Login />} />
-                            <Route element={<ProtectedRoute />}>
-                                <Route path="/" element={<Menu />}>
-                                    <Route path="/" element={<BookPage />} />
-                                    <Route
-                                        path="ProductDetail"
-                                        element={<ProductDetail />}
-                                    />
-                                    <Route path="ProductDetail" />
-                                    <Route
-                                        path="books"
-                                        element={<BookCard />}
-                                    />
-                                    <Route
-                                        path="books-user"
-                                        element={<BookForm />}
-                                    />
-                                    <Route
-                                        path="books-user/:id"
-                                        element={<BookForm />}
-                                    />
+                    <WalletProvider>
+                        <BrowserRouter>
+                            <Routes>
+                                <Route path="register" element={<Register />} />
+                                <Route path="login" element={<Login />} />
+                                <Route element={<ProtectedRoute />}>
+                                    <Route path="/" element={<Menu />}>
+                                        <Route
+                                            path="/"
+                                            element={<BookPage />}
+                                        />
+                                        <Route
+                                            path="ProductDetail"
+                                            element={<ProductDetail />}
+                                        />
+                                        <Route path="ProductDetail" />
+                                        <Route
+                                            path="books"
+                                            element={<BookCard />}
+                                        />
+                                        <Route
+                                            path="books-user"
+                                            element={<BookForm />}
+                                        />
+                                        <Route
+                                            path="books-user/:id"
+                                            element={<BookForm />}
+                                        />
+                                    </Route>
                                 </Route>
-                            </Route>
-                        </Routes>
-                    </BrowserRouter>
+                            </Routes>
+                        </BrowserRouter>
+                    </WalletProvider>
                 </BookProvider>
             </AuthProvider>
         </div>
