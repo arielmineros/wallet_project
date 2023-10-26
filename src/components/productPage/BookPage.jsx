@@ -47,58 +47,6 @@ function BookPage() {
 
     const [compraRealizada, setCompraRealizada] = useState(false);
     let transactionHash = "";
-    const handleCompraLibro = (id) => {
-        setSelectedBookId(id);
-    };
-
-    useEffect(() => {
-        fetchDataFromContract(); // Llamamos a esta función al cargar el componente
-    }, []);
-    async function fetchDataFromContract() {
-        const web3 = new Web3(new Web3.providers.HttpProvider(infuraURL));
-        const contract = new web3.eth.Contract(
-            booksSmartContract,
-            contractAddress
-        );
-        // Registrar información adicional, como las respuestas de llamadas a contratos inteligentes
-        web3.eth
-            .getBalance("0xad7c076227C8fb87D81cfC9104cc3F9AeeDdD02F")
-            .then((balance) => {
-                console.log("Saldo de la dirección:", balance);
-            });
-        // Obtener el libroCounter actual y cargar la lista de libros
-        const libroCounter = await contract.methods.libroCounter().call();
-        const libros = [];
-
-        for (let i = 1; i < libroCounter; i++) {
-            const libro = await contract.methods.libros(i).call();
-            libros.push({ id: i, ...libro });
-        }
-
-        // Actualizar la lista de libros en el estado
-        setLibrosContrato(libros);
-
-        // Escuchar el evento "VentaCreada" para actualizar la lista cuando se crea una nueva venta
-        contract.events.VentaCreada().on("data", (event) => {
-            const newLibro = {
-                id: event.returnValues.id,
-                ...event.returnValues,
-            };
-            setLibrosContrato([...librosContrato, newLibro]);
-        });
-
-        // Escuchar el evento "EstadoActualizado" para actualizar el estado de los libros vendidos
-        contract.events.EstadoActualizado().on("data", (event) => {
-            const updatedLibros = librosContrato.map((libro) => {
-                if (libro.id === event.returnValues.id) {
-                    return { ...libro, vendido: event.returnValues.vendido };
-                }
-                return libro;
-            });
-            setLibrosContrato(updatedLibros);
-        });
-    }
-
     const handleConfirmCompra = async () => {
         if (selectedBookId !== null) {
             const selectedBook = librosContrato[selectedBookId - 1];
@@ -157,6 +105,98 @@ function BookPage() {
             }
         }
     };
+    const handleCompraLibro = (id) => {
+        setSelectedBookId(id);
+        // swal.fire({
+        //     title: "Confirmar Compra",
+        //     text: "¿Estás seguro de que desea realiza la transacción de {}?",
+        //     icon: "question",
+        //     showCancelButton: true,
+        //     confirmButtonText: "Confirmar compra",
+        //     cancelButtonText: "Cancelar",
+        // }).then((result) => {
+        //     if (result.isConfirmed) {
+        //         handleConfirmCompra();
+        //     } else {
+        //         handleCancelarCompra();
+        //     }
+        // });
+    };
+    const confirmarCompraModal = () => {
+        swal.fire({
+            title: "Confirmar Compra",
+            text: "¿Estás seguro de que desea realiza la transacción de {}?",
+            icon: "question",
+            showCancelButton: true,
+            confirmButtonText: "Confirmar compra",
+            cancelButtonText: "Cancelar",
+        }).then((result) => {
+            if (result.isConfirmed) {
+                handleConfirmCompra();
+            } else {
+                handleCancelarCompra();
+            }
+        });
+    };
+    const descargarPDFModal=()=>{
+        swal.fire({
+            title:'Compra Realizada',
+            text:'Recibo generado: ',
+            confirmButtonText:'Descargar recibo'
+        }).then(result=>{
+            if(result.isConfirmed){
+                recibo.save('Recibo_Compra.pdf')
+            }
+        })
+    }
+
+    useEffect(() => {
+        fetchDataFromContract(); // Llamamos a esta función al cargar el componente
+    }, []);
+    async function fetchDataFromContract() {
+        const web3 = new Web3(new Web3.providers.HttpProvider(infuraURL));
+        const contract = new web3.eth.Contract(
+            booksSmartContract,
+            contractAddress
+        );
+        // Registrar información adicional, como las respuestas de llamadas a contratos inteligentes
+        web3.eth
+            .getBalance("0xad7c076227C8fb87D81cfC9104cc3F9AeeDdD02F")
+            .then((balance) => {
+                console.log("Saldo de la dirección:", balance);
+            });
+        // Obtener el libroCounter actual y cargar la lista de libros
+        const libroCounter = await contract.methods.libroCounter().call();
+        const libros = [];
+
+        for (let i = 1; i < libroCounter; i++) {
+            const libro = await contract.methods.libros(i).call();
+            libros.push({ id: i, ...libro });
+        }
+
+        // Actualizar la lista de libros en el estado
+        setLibrosContrato(libros);
+
+        // Escuchar el evento "VentaCreada" para actualizar la lista cuando se crea una nueva venta
+        contract.events.VentaCreada().on("data", (event) => {
+            const newLibro = {
+                id: event.returnValues.id,
+                ...event.returnValues,
+            };
+            setLibrosContrato([...librosContrato, newLibro]);
+        });
+
+        // Escuchar el evento "EstadoActualizado" para actualizar el estado de los libros vendidos
+        contract.events.EstadoActualizado().on("data", (event) => {
+            const updatedLibros = librosContrato.map((libro) => {
+                if (libro.id === event.returnValues.id) {
+                    return { ...libro, vendido: event.returnValues.vendido };
+                }
+                return libro;
+            });
+            setLibrosContrato(updatedLibros);
+        });
+    }
 
     // -------------------------------------------------------------------------------------------------------------
 
@@ -329,35 +369,50 @@ function BookPage() {
                     </div>
                 ))}
 
-                {selectedBookId !== null && (
-                    <div>
-                        <h3>Confirmar Compra</h3>
-                        <p>¿Estás seguro de que deseas comprar este libro?</p>
-                        <p>
-                            Precio:{" "}
-                            {web3.utils.fromWei(
-                                librosContrato[selectedBookId - 1].precio,
-                                "ether"
-                            )}{" "}
-                            ETH
-                        </p>
-                        <button onClick={handleConfirmCompra}>
-                            Confirmar Compra
-                        </button>
-                        <button onClick={handleCancelarCompra}>Cancelar</button>
-                    </div>
+                {selectedBookId !== null && ( confirmarCompraModal()
+                    // swal
+                    //     .fire({
+                    //         title: "Confirmar Compra",
+                    //         text: "¿Estás seguro de que desea realiza la transacción de {}?",
+                    //         icon: "question",
+                    //         showCancelButton: true,
+                    //         confirmButtonText: "Confirmar compra",
+                    //         cancelButtonText: "Cancelar",
+                    //     })
+                    //     .then((result) => {
+                    //         if (result.isConfirmed) {
+                    //             handleConfirmCompra();
+                    //         } else {
+                    //             handleCancelarCompra();
+                    //         }
+                    //     })
+                    // <div>
+                    //     <h3>Confirmar Compra</h3>
+                    //     <p>¿Estás seguro de que deseas comprar este libro?</p>
+                    //     <p>
+                    //         Precio:{" "}
+                    //         {web3.utils.fromWei(
+                    //             librosContrato[selectedBookId - 1].precio,
+                    //             "ether"
+                    //         )}{" "}
+                    //         ETH
+                    //     </p>
+                    //     <button onClick={handleConfirmCompra}>
+                    //         Confirmar Compra
+                    //     </button>
+                    //     <button onClick={handleCancelarCompra}>Cancelar</button>
+                    // </div>
                 )}
-                {compraRealizada && (
-                    <div>
-                        <h3>Compra Realizada</h3>
-                        <p>Recibo generado:</p>
-                        <button
-                            onClick={() => recibo.save("recibo_compra.pdf")}
-                        >
-                            Descargar Recibo
-                        </button>
-                        {/* <QRCode value={transactionHash} /> {/* Muestra el QR con el hash de la transacción */}
-                    </div>
+                {compraRealizada && (descargarPDFModal()
+                    // <div>
+                    //     <h3>Compra Realizada</h3>
+                    //     <p>Recibo generado:</p>
+                    //     <button
+                    //         onClick={() => recibo.save("recibo_compra.pdf")}
+                    //     >
+                    //         Descargar Recibo
+                    //     </button>
+                    // </div>
                 )}
             </div>
         </>
