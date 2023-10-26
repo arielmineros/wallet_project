@@ -7,24 +7,23 @@ import { Outlet, Link, useNavigate, useParams } from "react-router-dom";
 import { useWallet } from "../../context/WalletContext";
 import { useAuth } from "../../context/AuthContext";
 import booksSmartContract from "../../smartContract/booksSmartContract.json";
-const contractAddress = "0xE5E2A023d63eD8F0752746e5028e622468c4aB35";
+import Web3 from "web3";
+import jsPDF from 'jspdf'
+import qr from 'qrcode'
 
 function BookForm() {
+    const infuraURL =
+        "https://sepolia.infura.io/v3/94d095b8cdeb41f09b4158471df033b6";
+    const contractAddress = "0x5538215d05007Cd0E6e3546903f704993B9b71c0";
     const { register, handleSubmit, setValue } = useForm();
-    const {
-        booksUser,
-        createBook,
-        updateBook,
-        getBook,
-        getUserBooks,
-        deleteBook,
-    } = useBook();
+    const { createBook, updateBook, getBook } = useBook();
     const { userName } = useAuth();
     const params = useParams();
     const [loading, setLoading] = useState(true);
 
     // Shit from smart contract
-    const { web3, accounts, walletConnected } = useWallet();
+    const { web3, accounts, walletConnected } = useWallet(); // Usa el contexto de la billetera
+
     const [libros, setLibros] = useState([]);
 
     const [ventaCreadaEvent, setVentaCreadaEvent] = useState(null);
@@ -37,39 +36,45 @@ function BookForm() {
 
     const [librosContrato, setLibrosContrato] = useState([]);
 
-    const [ventas, setVentas] = useState([]);
+    //22-10
 
-    const [nombreLibroContrato, setNombreLibroContrato] = useState("");
-    const [autorContrato, setAutorContrato] = useState("");
-    const [isbnContrato, setIsbnContrato] = useState("");
-    const [precioContrato, setPrecioContrato] = useState("");
+    const [selectedBookId, setSelectedBookId] = useState(null);
+    const [recibo, setRecibo] = useState(null);
+
+    const [compraRealizada, setCompraRealizada] = useState(false);
+    let transactionHash = "";
+    const [imagenURL, setImagenURL] = useState(""); // Nuevo estado para la URL de la imagen
 
     useEffect(() => {
-        async function fetchDataFromContract() {
-            if (web3) {
-                const contract = new web3.eth.Contract(
-                    booksSmartContract,
-                    contractAddress
-                );
+        fetchDataFromContract();
+    }, []);
+    async function fetchDataFromContract() {
+        const web3 = new Web3(new Web3.providers.HttpProvider(infuraURL));
+        const contract = new web3.eth.Contract(
+            booksSmartContract,
+            contractAddress
+        );
+        // Registrar información adicional, como las respuestas de llamadas a contratos inteligentes
+        web3.eth
+            .getBalance("0xad7c076227C8fb87D81cfC9104cc3F9AeeDdD02F")
+            .then((balance) => {
+                console.log("Saldo de la dirección:", balance);
+            });
+        const libroCounter = await contract.methods.libroCounter().call();
 
-                const libroCounter = await contract.methods
-                    .libroCounter()
-                    .call();
-
-                // Itera sobre todos los libros en el contrato y almacénalos en un array
-                const libros = [];
-                for (let i = 0; i < libroCounter; i++) {
-                    const libro = await contract.methods.libros(i).call();
-                    libros.push(libro);
-                }
-
-                // Asigna la lista de libros al estado del componente
-                setLibrosContrato(libros);
-            }
+        const libros = [];
+        for (let i = 0; i < libroCounter; i++) {
+            const libro = await contract.methods.libros(i).call();
+            libros.push(libro);
         }
 
-        fetchDataFromContract();
-    }, [web3]);
+        setLibrosContrato(libros);
+    }
+
+    const handleImagenChange = (e) => {
+        const imageUrl = e.target.value; // Esto asume que el usuario ingresará manualmente la URL de la imagen
+        setImagenURL(imageUrl);
+    };
 
     const handleCreateVenta = async () => {
         if (!walletConnected) {
@@ -83,12 +88,80 @@ function BookForm() {
                 contractAddress
             );
 
+            // Convierte el precio ingresado en ether a wei
+            const precioWei = web3.utils.toWei(precio, "ether");
+
             await contract.methods
-                .crearVenta(nombreLibro, autor, isbn, precio)
+                .crearVenta(nombreLibro, autor, isbn, precioWei, imagenURL) // Envía el precio en wei
                 .send({ from: accounts[0] });
-            // Realizar acciones adicionales después de la creación de la venta.
         }
     };
+    // const handleCompraLibro = (id) => {
+    //     setSelectedBookId(id);
+    // };
+
+    // const handleConfirmCompra = async () => {
+    //     if (selectedBookId !== null) {
+    //         const selectedBook = librosContrato[selectedBookId - 1];
+
+    //         if (selectedBook.vendido) {
+    //             alert("Este libro ya ha sido vendido");
+    //             return;
+    //         }
+    //         const precioWei = selectedBook.precio;
+    //         if (web3) {
+    //             const contract = new web3.eth.Contract(
+    //                 booksSmartContract,
+    //                 contractAddress
+    //             );
+    //             const transaction = await contract.methods
+    //                 .comprarLibro(selectedBookId)
+    //                 .send({
+    //                     from: accounts[0],
+    //                     value: precioWei,
+    //                 });
+    //             const transactionHash = transaction.transactionHash; // Obtener el hash de la transacción
+
+    //             // Construir la URL completa de etherscan.io
+    //             const etherscanUrl = `https://sepolia.etherscan.io/tx/${transactionHash}`;
+
+    //             // Actualiza el estado del libro en la interfaz de usuario
+    //             selectedBook.vendido = true;
+
+    //             // Genera el recibo en formato PDF
+    //             const doc = new jsPDF();
+    //             doc.text("Recibo de Compra", 10, 10);
+    //             doc.text(
+    //                 "Fecha y Hora: " + new Date().toLocaleString(),
+    //                 10,
+    //                 20
+    //             );
+    //             doc.text("Libro: " + selectedBook.nombreLibro, 10, 30);
+    //             doc.text("Autor: " + selectedBook.autor, 10, 40);
+    //             doc.text("ISBN: " + selectedBook.isbn, 10, 50);
+    //             doc.text(
+    //                 "Precio: " +
+    //                     web3.utils.fromWei(selectedBook.precio, "ether") +
+    //                     " ETH",
+    //                 10,
+    //                 60
+    //             );
+
+    //             // Generar el código QR y agregarlo al PDF
+    //             const qrData = etherscanUrl;
+    //             const qrDataUrl = await qr.toDataURL(qrData); // Utiliza 'toDataURL'
+    //             doc.addImage(qrDataUrl, "JPEG", 10, 70, 50, 50);
+
+    //             // Establecer la compra como realizada y almacenar el recibo
+    //             setCompraRealizada(true);
+    //             setRecibo(doc);
+    //         }
+    //     }
+    // };
+
+    // const handleCancelarCompra = () => {
+    //     setSelectedBookId(null);
+    // };
 
     // stuff from db
     const navigate = useNavigate();
@@ -127,11 +200,7 @@ function BookForm() {
         <>
             <h2>Bienvenido {userName}</h2>
             {/* <h1>Libros agregados por el usuario: </h1> */}
-            <form
-                onSubmit={onSubmit}
-                onClick={handleCreateVenta}
-                id="form-book"
-            >
+            <form onSubmit={onSubmit} id="form-book">
                 <h3>Agrega un libro: </h3>
 
                 <input
@@ -202,9 +271,13 @@ function BookForm() {
                     id="input-book"
                     placeholder="url"
                     {...register("imageUrl")}
+                    value={imagenURL}
+                    onChange={handleImagenChange}
                 />
 
-                <button className="button-BookForm">Guardar</button>
+                <button onClick={handleCreateVenta} className="button-BookForm">
+                    Guardar
+                </button>
             </form>
             {/* {loading ? (
                 <h1>Cargando libros...</h1>

@@ -1,46 +1,5 @@
 [
 	{
-		"inputs": [
-			{
-				"internalType": "uint256",
-				"name": "_id",
-				"type": "uint256"
-			}
-		],
-		"name": "actualizarEstadoVenta",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "string",
-				"name": "_nombreLibro",
-				"type": "string"
-			},
-			{
-				"internalType": "string",
-				"name": "_autor",
-				"type": "string"
-			},
-			{
-				"internalType": "string",
-				"name": "_isbn",
-				"type": "string"
-			},
-			{
-				"internalType": "uint256",
-				"name": "_precio",
-				"type": "uint256"
-			}
-		],
-		"name": "crearVenta",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
 		"inputs": [],
 		"stateMutability": "nonpayable",
 		"type": "constructor"
@@ -57,11 +16,30 @@
 			{
 				"indexed": false,
 				"internalType": "bool",
-				"name": "verificacion",
+				"name": "vendido",
 				"type": "bool"
 			}
 		],
 		"name": "EstadoActualizado",
+		"type": "event"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": true,
+				"internalType": "uint256",
+				"name": "id",
+				"type": "uint256"
+			},
+			{
+				"indexed": false,
+				"internalType": "address",
+				"name": "comprador",
+				"type": "address"
+			}
+		],
+		"name": "LibroComprado",
 		"type": "event"
 	},
 	{
@@ -96,10 +74,62 @@
 				"internalType": "uint256",
 				"name": "precio",
 				"type": "uint256"
+			},
+			{
+				"indexed": false,
+				"internalType": "string",
+				"name": "imagenURL",
+				"type": "string"
 			}
 		],
 		"name": "VentaCreada",
 		"type": "event"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_id",
+				"type": "uint256"
+			}
+		],
+		"name": "comprarLibro",
+		"outputs": [],
+		"stateMutability": "payable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "string",
+				"name": "_nombreLibro",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_autor",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_isbn",
+				"type": "string"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_precio",
+				"type": "uint256"
+			},
+			{
+				"internalType": "string",
+				"name": "_imagenURL",
+				"type": "string"
+			}
+		],
+		"name": "crearVenta",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
 	},
 	{
 		"inputs": [],
@@ -146,13 +176,23 @@
 			},
 			{
 				"internalType": "bool",
-				"name": "verificacion",
+				"name": "vendido",
 				"type": "bool"
 			},
 			{
 				"internalType": "uint256",
 				"name": "creadoEn",
 				"type": "uint256"
+			},
+			{
+				"internalType": "address",
+				"name": "creador",
+				"type": "address"
+			},
+			{
+				"internalType": "string",
+				"name": "imagenURL",
+				"type": "string"
 			}
 		],
 		"stateMutability": "view",
