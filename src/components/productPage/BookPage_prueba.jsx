@@ -12,7 +12,7 @@ import qr from "qrcode";
 const infuraURL =
     "https://sepolia.infura.io/v3/94d095b8cdeb41f09b4158471df033b6";
 
-const contractAddress = "0x44ac913DF65387a973FE249002060D31a75102f8";
+const contractAddress = '0x55A33A7159e281A0903F4633dE31E266d4870df2';
 
 function BookPage1() {
     //

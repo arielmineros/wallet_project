@@ -9,6 +9,7 @@ import jsPDF from "jspdf";
 import qr from "qrcode";
 import booksSmartContract from "../../smartContract/booksSmartContract.json";
 import swal from "sweetalert2";
+import getContractHash from "./ContractHash";
 
 const style = {
     width: "100px",
@@ -16,7 +17,7 @@ const style = {
 };
 const infuraURL =
     "https://sepolia.infura.io/v3/94d095b8cdeb41f09b4158471df033b6";
-const contractAddress = "0x5538215d05007Cd0E6e3546903f704993B9b71c0";
+const contractAddress = '0x55A33A7159e281A0903F4633dE31E266d4870df2';
 
 function BookPage() {
     const { books, getBooks } = useBook();
@@ -48,61 +49,74 @@ function BookPage() {
     const [compraRealizada, setCompraRealizada] = useState(false);
     let transactionHash = "";
     const handleConfirmCompra = async () => {
-        if (selectedBookId !== null) {
-            const selectedBook = librosContrato[selectedBookId - 1];
+        try {
+            if (selectedBookId !== null) {
+                const selectedBook = librosContrato[selectedBookId - 1];
 
-            if (selectedBook.vendido) {
-                alert("Este libro ya ha sido vendido");
-                return;
+                if (selectedBook.vendido) {
+                    alert("Este libro ya ha sido vendido");
+                    return;
+                }
+                if (selectedBook.creador === accounts[0]) {
+                    swal.fire({
+                        title: "No se puede realizar la compra",
+                        text: "El vendedor no puede comprar su propio libro",
+                        icon: "warning",
+                        confirmButtonText: "Aceptar",
+                    }); // Muestra el modal
+                    return;
+                }
+                const precioWei = selectedBook.precio;
+                if (web3) {
+                    const contract = new web3.eth.Contract(
+                        booksSmartContract,
+                        contractAddress
+                    );
+                    const transaction = await contract.methods
+                        .comprarLibro(selectedBookId)
+                        .send({
+                            from: accounts[0],
+                            value: precioWei,
+                        });
+                    const transactionHash = transaction.transactionHash; // Obtener el hash de la transacción
+
+                    // Construir la URL completa de etherscan.io
+                    const etherscanUrl = `https://sepolia.etherscan.io/tx/${transactionHash}`;
+
+                    // Actualiza el estado del libro en la interfaz de usuario
+                    selectedBook.vendido = true;
+
+                    // Genera el recibo en formato PDF
+                    const doc = new jsPDF();
+                    doc.text("Recibo de Compra", 10, 10);
+                    doc.text(
+                        "Fecha y Hora: " + new Date().toLocaleString(),
+                        10,
+                        20
+                    );
+                    doc.text("Libro: " + selectedBook.nombreLibro, 10, 30);
+                    doc.text("Autor: " + selectedBook.autor, 10, 40);
+                    doc.text("ISBN: " + selectedBook.isbn, 10, 50);
+                    doc.text(
+                        "Precio: " +
+                            web3.utils.fromWei(selectedBook.precio, "ether") +
+                            " ETH",
+                        10,
+                        60
+                    );
+
+                    // Generar el código QR y agregarlo al PDF
+                    const qrData = etherscanUrl;
+                    const qrDataUrl = await qr.toDataURL(qrData); // Utiliza 'toDataURL'
+                    doc.addImage(qrDataUrl, "JPEG", 10, 70, 50, 50);
+
+                    // Establecer la compra como realizada y almacenar el recibo
+                    setCompraRealizada(true);
+                    setRecibo(doc);
+                }
             }
-            const precioWei = selectedBook.precio;
-            if (web3) {
-                const contract = new web3.eth.Contract(
-                    booksSmartContract,
-                    contractAddress
-                );
-                const transaction = await contract.methods
-                    .comprarLibro(selectedBookId)
-                    .send({
-                        from: accounts[0],
-                        value: precioWei,
-                    });
-                const transactionHash = transaction.transactionHash; // Obtener el hash de la transacción
-
-                // Construir la URL completa de etherscan.io
-                const etherscanUrl = `https://sepolia.etherscan.io/tx/${transactionHash}`;
-
-                // Actualiza el estado del libro en la interfaz de usuario
-                selectedBook.vendido = true;
-
-                // Genera el recibo en formato PDF
-                const doc = new jsPDF();
-                doc.text("Recibo de Compra", 10, 10);
-                doc.text(
-                    "Fecha y Hora: " + new Date().toLocaleString(),
-                    10,
-                    20
-                );
-                doc.text("Libro: " + selectedBook.nombreLibro, 10, 30);
-                doc.text("Autor: " + selectedBook.autor, 10, 40);
-                doc.text("ISBN: " + selectedBook.isbn, 10, 50);
-                doc.text(
-                    "Precio: " +
-                        web3.utils.fromWei(selectedBook.precio, "ether") +
-                        " ETH",
-                    10,
-                    60
-                );
-
-                // Generar el código QR y agregarlo al PDF
-                const qrData = etherscanUrl;
-                const qrDataUrl = await qr.toDataURL(qrData); // Utiliza 'toDataURL'
-                doc.addImage(qrDataUrl, "JPEG", 10, 70, 50, 50);
-
-                // Establecer la compra como realizada y almacenar el recibo
-                setCompraRealizada(true);
-                setRecibo(doc);
-            }
+        } catch (error) {
+            console.log(error);
         }
     };
     const handleCompraLibro = (id) => {
@@ -138,65 +152,79 @@ function BookPage() {
             }
         });
     };
-    const descargarPDFModal=()=>{
+    const descargarPDFModal = () => {
         swal.fire({
-            title:'Compra Realizada',
-            text:'Recibo generado: ',
-            confirmButtonText:'Descargar recibo'
-        }).then(result=>{
-            if(result.isConfirmed){
-                recibo.save('Recibo_Compra.pdf')
+            title: "Compra Realizada",
+            text: "Recibo generado: ",
+            confirmButtonText: "Descargar recibo",
+        }).then((result) => {
+            if (result.isConfirmed) {
+                recibo.save("Recibo_Compra.pdf");
             }
-        })
-    }
+        });
+    };
 
     useEffect(() => {
         fetchDataFromContract(); // Llamamos a esta función al cargar el componente
     }, []);
     async function fetchDataFromContract() {
-        const web3 = new Web3(new Web3.providers.HttpProvider(infuraURL));
-        const contract = new web3.eth.Contract(
-            booksSmartContract,
-            contractAddress
-        );
-        // Registrar información adicional, como las respuestas de llamadas a contratos inteligentes
-        web3.eth
-            .getBalance("0xad7c076227C8fb87D81cfC9104cc3F9AeeDdD02F")
-            .then((balance) => {
-                console.log("Saldo de la dirección:", balance);
-            });
-        // Obtener el libroCounter actual y cargar la lista de libros
-        const libroCounter = await contract.methods.libroCounter().call();
-        const libros = [];
+        try {
+            const web3 = new Web3(new Web3.providers.HttpProvider(infuraURL));
+            const contract = new web3.eth.Contract(
+                booksSmartContract,
+                contractAddress
+            );
+            // Registrar información adicional, como las respuestas de llamadas a contratos inteligentes
+            web3.eth
+                .getBalance("0xad7c076227C8fb87D81cfC9104cc3F9AeeDdD02F")
+                .then((balance) => {
+                    console.log("Saldo de la dirección:", balance);
+                });
+            // Obtener el libroCounter actual y cargar la lista de libros
+            const libroCounter = await contract.methods.libroCounter().call();
+            const libros = [];
 
-        for (let i = 1; i < libroCounter; i++) {
-            const libro = await contract.methods.libros(i).call();
-            libros.push({ id: i, ...libro });
+            for (let i = 1; i < libroCounter; i++) {
+                const libro = await contract.methods.libros(i).call();
+                libros.push({ id: i, ...libro });
+            }
+
+            // Actualizar la lista de libros en el estado
+            setLibrosContrato(libros);
+
+            // Escuchar el evento "VentaCreada" para actualizar la lista cuando se crea una nueva venta
+            contract.events.VentaCreada().on("data", (event) => {
+                const newLibro = {
+                    id: event.returnValues.id,
+                    ...event.returnValues,
+                };
+                setLibrosContrato([...librosContrato, newLibro]);
+            });
+
+            // Escuchar el evento "EstadoActualizado" para actualizar el estado de los libros vendidos
+            contract.events.EstadoActualizado().on("data", (event) => {
+                const updatedLibros = librosContrato.map((libro) => {
+                    if (libro.id === event.returnValues.id) {
+                        return {
+                            ...libro,
+                            vendido: event.returnValues.vendido,
+                        };
+                    }
+                    return libro;
+                });
+                setLibrosContrato(updatedLibros);
+            });
+        } catch (error) {
+            console.log(error);
         }
-
-        // Actualizar la lista de libros en el estado
-        setLibrosContrato(libros);
-
-        // Escuchar el evento "VentaCreada" para actualizar la lista cuando se crea una nueva venta
-        contract.events.VentaCreada().on("data", (event) => {
-            const newLibro = {
-                id: event.returnValues.id,
-                ...event.returnValues,
-            };
-            setLibrosContrato([...librosContrato, newLibro]);
-        });
-
-        // Escuchar el evento "EstadoActualizado" para actualizar el estado de los libros vendidos
-        contract.events.EstadoActualizado().on("data", (event) => {
-            const updatedLibros = librosContrato.map((libro) => {
-                if (libro.id === event.returnValues.id) {
-                    return { ...libro, vendido: event.returnValues.vendido };
-                }
-                return libro;
-            });
-            setLibrosContrato(updatedLibros);
-        });
     }
+    const getEth = (precio, cambio) => {
+        try {
+            return web3.utils.fromWei(precio, cambio);
+        } catch (error) {
+            console.log(error);
+        }
+    };
 
     // -------------------------------------------------------------------------------------------------------------
 
@@ -348,15 +376,31 @@ function BookPage() {
                             />
                         </div>
                         <div className="book-info">
-                            <p>Nombre del Libro: {libro.nombreLibro}</p>
-                            <p>Autor: {libro.autor}</p>
-                            <p>ISBN: {libro.isbn}</p>
+                            <b>
+                                <i>
+                                    <h1>{libro.nombreLibro}</h1>
+                                </i>
+                            </b>
                             <p>
-                                Precio:{" "}
-                                {web3.utils.fromWei(libro.precio, "ether")} ETH
+                                <b>
+                                    <i>Autor: </i>
+                                </b>
+                                {libro.autor}
+                            </p>
+                            <p>
+                                <b>
+                                    <i>ISBN: </i>
+                                </b>
+                                {libro.isbn}
+                            </p>
+                            <p>
+                                <b>
+                                    <i>Precio: </i>
+                                </b>
+                                {getEth(libro.precio, "ether")} ETH
                             </p>
                             {libro.vendido ? (
-                                <p>Estado: Vendido</p>
+                                <p id="estado-p"> VENDIDO</p>
                             ) : (
                                 <button
                                     onClick={() => handleCompraLibro(index + 1)}
@@ -369,7 +413,8 @@ function BookPage() {
                     </div>
                 ))}
 
-                {selectedBookId !== null && ( confirmarCompraModal()
+                {
+                    selectedBookId !== null && confirmarCompraModal()
                     // swal
                     //     .fire({
                     //         title: "Confirmar Compra",
@@ -402,8 +447,9 @@ function BookPage() {
                     //     </button>
                     //     <button onClick={handleCancelarCompra}>Cancelar</button>
                     // </div>
-                )}
-                {compraRealizada && (descargarPDFModal()
+                }
+                {
+                    compraRealizada && descargarPDFModal()
                     // <div>
                     //     <h3>Compra Realizada</h3>
                     //     <p>Recibo generado:</p>
@@ -413,7 +459,7 @@ function BookPage() {
                     //         Descargar Recibo
                     //     </button>
                     // </div>
-                )}
+                }
             </div>
         </>
     );

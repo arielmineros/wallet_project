@@ -10,11 +10,12 @@ import booksSmartContract from "../../smartContract/booksSmartContract.json";
 import Web3 from "web3";
 import jsPDF from 'jspdf'
 import qr from 'qrcode'
+import getContractHash from "./ContractHash";
 
 function BookForm() {
     const infuraURL =
         "https://sepolia.infura.io/v3/94d095b8cdeb41f09b4158471df033b6";
-    const contractAddress = "0x5538215d05007Cd0E6e3546903f704993B9b71c0";
+    const contractAddress = '0x55A33A7159e281A0903F4633dE31E266d4870df2';
     const { register, handleSubmit, setValue } = useForm();
     const { createBook, updateBook, getBook } = useBook();
     const { userName } = useAuth();

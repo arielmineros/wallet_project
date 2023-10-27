@@ -139,14 +139,14 @@ function Menu() {
                                     src={require("../../img/logo3.png")}
                                     alt="logo"
                                 />
-                                <label id="brand-name">Blockchain</label>
+                                <label id="brand-name">Bookchain</label>
                             </li>
                         </Link>
                     </div>
 
-                    <div className="search-contenedor">
+                    {/* <div className="search-contenedor">
                         <SearchBar />
-                    </div>
+                    </div> */}
 
                     <div className="menu-contenedor">
                         <>
@@ -154,7 +154,7 @@ function Menu() {
                                 <>
                                     <li>
                                         <Link
-                                            to="/ProductDetail"
+                                            to="/"
                                             className="navegador-item"
                                         >
                                             <img
@@ -174,7 +174,7 @@ function Menu() {
                                             />
                                         </Link>
                                     </li>
-                                    <li>
+                                    {/* <li>
                                         <Link
                                             to="/Cart"
                                             className="navegador-item"
@@ -184,7 +184,7 @@ function Menu() {
                                                 className="menu-icon"
                                             />
                                         </Link>
-                                    </li>
+                                    </li> */}
                                     <li>
                                         <Link
                                             to={"/books"}
